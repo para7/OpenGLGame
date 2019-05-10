@@ -1,5 +1,3 @@
-#pragma once
-
 #include "GLFuncs.hpp"
 
 #include <stdlib.h>
