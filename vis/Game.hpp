@@ -3,7 +3,7 @@
 #include "SceneManager.hpp"
 #include <string>
 
-class Game : Mysystem::SceneMaster<std::string>::SceneBase
+class Game : public Mysystem::SceneMaster<std::string>::SceneBase
 {
 public:
     Game();

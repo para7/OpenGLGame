@@ -5,117 +5,119 @@
 
 namespace Mysystem
 {
-    template <class Key>
-    class SceneMaster
-    {
-    public:
+	template <class Key>
+	class SceneMaster
+	{
+	public:
 
-        using KeyType = Key;
+		using KeyType = Key;
 
-    public:
+	public:
 
-        class SceneBase
-        {
-        private:
+		class SceneBase
+		{
+		private:
 
-            SceneMaster<KeyType>* master;
+			SceneMaster<KeyType>* master;
 
-        protected:
+		protected:
 
-            virtual void changeScene(const Key& next) final
-            {
-                master->changeScene(next);
-            }
+			virtual void changeScene(const Key& next) final
+			{
+				master->changeScene(next);
+			}
 
-        public:
+		public:
 
-            virtual void setdata(SceneMaster<KeyType>* _master) final
-            {
-                master = _master;
-            }
+			virtual void setdata(SceneMaster<KeyType>* _master) final
+			{
+				master = _master;
+			}
 
-            virtual void update() {}
-            virtual void draw() const {}
-            virtual ~SceneBase() {}
-        };
+			virtual void update() {}
+			virtual void draw() const {}
+			virtual ~SceneBase() {}
+		};
 
-    private:
+	private:
 
-        std::shared_ptr<SceneBase> currentscene;
+		std::shared_ptr<SceneBase> currentscene;
 
-        std::unordered_map<Key, std::function<std::shared_ptr<SceneBase>()>> scenelist;
+		std::unordered_map<Key, std::function<std::shared_ptr<SceneBase>()>> scenelist;
 
-        bool changereserve;
+		bool changereserve;
 
-        Key nextscenename;
+		Key nextscenename;
 
-    public:
+	public:
 
-        template <class SceneType>
-        void Add(Key key)
-        {
-            auto factory = [=]() {
-                return std::make_shared<SceneType>();
-            };
+		template <class SceneType>
+		void Add(Key key)
+		{
+			auto factory = [=]() {
+				return std::make_shared<SceneType>();
+			};
 
-			auto it = scenelist.find(key);
+			scenelist.emplace(key, factory);
+			auto it = scenelist.find("game");
 
-            if (it == scenelist.end())
-            {
+			if (it == scenelist.end())
+			{
 				scenelist.emplace(key, factory);
 
 				if (!currentscene)
 				{
 					currentscene = scenelist[key]();
 				}
-            }
-            else
-            {
-//				scenelist[key] = factory;
-            }
-        }
+			}
+			else
+			{
+				//				scenelist[key] = factory;
+			}
+		}
 
-        bool changeScene(Key next)
-        {
-            auto it = scenelist.find(next);
+		bool changeScene(Key next)
+		{
+			auto it = scenelist.find(next);
 
-            if (it == scenelist.end())
-            {
-                return false;
-            }
+			if (it == scenelist.end())
+			{
+				return false;
+			}
 
-            changereserve = true;
-            nextscenename = next;
-        }
+			changereserve = true;
+			nextscenename = next;
+		}
 
-        void Update()
-        {
-            if (changereserve)
-            {
-                changereserve = false;
-                currentscene = scenelist[nextscenename]();
-            }
+		void Update()
+		{
+			if (changereserve)
+			{
+				changereserve = false;
+				currentscene = scenelist[nextscenename]();
+			}
 
-            if (!currentscene)
-            {
-                return;
-            }
+			if (!currentscene)
+			{
+				return;
+			}
 
-            currentscene->update();
-        }
+			currentscene->update();
+		}
 
-        void Draw() const
-        {
-            if (!currentscene)
-            {
-                return;
-            }
+		void Draw() const
+		{
+			if (!currentscene)
+			{
+				return;
+			}
 
-            currentscene->draw();
-        }
+			currentscene->draw();
+		}
 
-        SceneMaster()
-            : changereserve(false)
-        {}
-    };
+		SceneMaster()
+			: changereserve(false)
+			, scenelist()
+		{}
+	};
 }

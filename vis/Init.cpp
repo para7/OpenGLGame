@@ -2,12 +2,14 @@
 #include "SceneManager.hpp"
 #include "Game.hpp"
 #include "GLFuncs.hpp"
-
+#include <memory>
+#include <string>
 
 void MyInit()
 {
-	Myapp app;
+	std::shared_ptr<Myapp> app;
 
-	app.Add<Game>("game");
+	app->Add<Game>("game");
 
+	PushSceneManager(app);
 }
