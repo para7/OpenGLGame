@@ -1,5 +1,14 @@
 #pragma once
 
+#include "SceneManager.hpp"
+#include <memory>
+
+using Myapp = Mysystem::SceneMaster <std::string>;
+
+void PushSceneManager(std::shared_ptr<Myapp> manager);
+
+void PopSceneManager();
+
 /// <summary>
 /// 描画を行う
 /// </summary>
@@ -72,4 +81,4 @@ void myKbd(unsigned char key, int x, int y);
 /// <param name="progname">
 /// glutCreateWindowに使うパラメータ
 /// </param>
-void myInit(char *progname);
+void glInits(char *progname);

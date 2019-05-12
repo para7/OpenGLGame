@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <functional>
-#include <string>
 #include <unordered_map>
 
 namespace Mysystem
@@ -59,20 +58,20 @@ namespace Mysystem
                 return std::make_shared<SceneType>();
             };
 
-            auto it = scenelist.find(key);
+			auto it = scenelist.find(key);
 
-            if (it != scenelist.end())
+            if (it == scenelist.end())
             {
-                it.value() = factory;
+				scenelist.emplace(key, factory);
+
+				if (!currentscene)
+				{
+					currentscene = scenelist[key]();
+				}
             }
             else
             {
-                scenelist.emplace(key, factory);
-
-                if (!currentscene)
-                {
-                    currentscene = scenelist[key]();
-                }
+//				scenelist[key] = factory;
             }
         }
 

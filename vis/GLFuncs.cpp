@@ -8,13 +8,27 @@
 #include <stack>
 #include "SceneManager.hpp"
 #include <string>
-#include <memory>
+#include "Inputs.hpp"
+#include <iostream>
+#include <GLFW/glfw3.h>
 
 float distance = 20., twist = 0., elevation = 30., azimuth = 20.;
 
-using Myapp = Mysystem::SceneMaster <std::string>;
+static std::stack<std::shared_ptr<Myapp>> scenemasters;
 
-std::stack<std::shared_ptr<Myapp>> scenemasters;
+void PushSceneManager(std::shared_ptr<Myapp> manager)
+{
+	scenemasters.push(manager);
+}
+
+void PopSceneManager()
+{
+	if (scenemasters.empty())
+	{
+		return;
+	}
+	scenemasters.pop();
+}
 
 /// <summary>
 /// 描画を行う
@@ -155,16 +169,18 @@ void myKbd(unsigned char key, int x, int y)
 {
     //Sample from c5-2.c
 
-    //switch (key) {
-    //case 'w':
-    //    wireFlag = !wireFlag;
-    //    break;
-    //case 'R':
-    //    resetview();
-    //    break;
-    //case KEY_ESC:
-    //    exit(0);
-    //}
+    switch (key) {
+    case 'w':
+
+        break;
+    default:
+        std::cout << (int)key << std::endl;
+        break;
+        //esc27 del127 enter13 space32
+//    case KEY_ESC:
+//        exit(0);
+//       break;
+    }
 
     //char型でキーの情報が送られてくるので
     //switch caseで指定できる
@@ -176,7 +192,7 @@ void myKbd(unsigned char key, int x, int y)
 /// <param name="progname">
 /// glutCreateWindowに使うパラメータ
 /// </param>
-void myInit(char *progname)
+void glInits(char *progname)
 {
     int width = 500, height = 500;
     float aspect = (float)width / (float)height;
@@ -185,7 +201,11 @@ void myInit(char *progname)
     glutInitWindowSize(width, height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glutCreateWindow(progname);
-    glClearColor(0.3, 0.3, 0.3, 1.0);
+    //背景色
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+
+    //垂直同期の設定
+    glfwSwapInterval(1);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();/*行列スタックをクリア*/

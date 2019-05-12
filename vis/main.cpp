@@ -6,6 +6,7 @@
 #include "GL/glut.h"
 #include "GL/gl.h"
 #include "GL/glu.h"
+#include "Init.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,8 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
 
     //©•ª‚Ì‰Šú‰»ŠÖ”
-    myInit(argv[0]);
+    glInits(argv[0]);
+	MyInit();
 
     //•`‰æ‚ğs‚¤ŠÖ”‚ğİ’è
     glutDisplayFunc(display);
