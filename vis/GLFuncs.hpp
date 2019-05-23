@@ -2,8 +2,7 @@
 
 #include "SceneManager.hpp"
 #include <memory>
-
-using Myapp = Mysystem::SceneMaster <std::string>;
+#include "Common.hpp"
 
 void PushSceneManager(std::shared_ptr<Myapp> manager);
 

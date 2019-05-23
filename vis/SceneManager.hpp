@@ -2,6 +2,7 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
+#include <string>
 
 namespace Mysystem
 {
@@ -18,7 +19,7 @@ namespace Mysystem
 		{
 		private:
 
-			SceneMaster<KeyType>* master;
+			SceneMaster<Key>* master;
 
 		protected:
 
@@ -29,7 +30,7 @@ namespace Mysystem
 
 		public:
 
-			virtual void setdata(SceneMaster<KeyType>* _master) final
+			virtual void setdata(SceneMaster<Key>* _master) final
 			{
 				master = _master;
 			}
@@ -52,14 +53,15 @@ namespace Mysystem
 	public:
 
 		template <class SceneType>
-		void Add(Key key)
+		void Add(const Key& key)
 		{
 			auto factory = [=]() {
-				return std::make_shared<SceneType>();
+				auto val = std::make_shared<SceneType>();
+				val->setdata(this);
+				return val;
 			};
 
-			scenelist.emplace(key, factory);
-			auto it = scenelist.find("game");
+			auto it = scenelist.find(key);
 
 			if (it == scenelist.end())
 			{
@@ -72,11 +74,11 @@ namespace Mysystem
 			}
 			else
 			{
-				//				scenelist[key] = factory;
+				scenelist[key] = factory;
 			}
 		}
 
-		bool changeScene(Key next)
+		bool changeScene(const Key& next)
 		{
 			auto it = scenelist.find(next);
 

@@ -7,9 +7,10 @@
 
 void MyInit()
 {
-	std::shared_ptr<Myapp> app;
+	auto app = std::make_shared<Myapp>();
 
 	app->Add<Game>("game");
+	app->Add<TestScene>("next");
 
 	PushSceneManager(app);
 }

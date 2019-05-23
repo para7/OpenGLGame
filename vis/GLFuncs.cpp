@@ -212,3 +212,4 @@ void glInits(char *progname)
     gluPerspective(30., aspect, 1., 50.);
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 }
+
