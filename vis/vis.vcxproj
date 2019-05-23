@@ -27,11 +27,13 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GLFuncs.hpp" />
     <ClInclude Include="Init.hpp" />
     <ClInclude Include="Inputs.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="read_bitmap.h" />
     <ClInclude Include="SceneManager.hpp" />
   </ItemGroup>
   <ItemGroup>

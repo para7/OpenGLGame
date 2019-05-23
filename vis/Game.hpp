@@ -2,8 +2,9 @@
 
 #include "SceneManager.hpp"
 #include <string>
+#include "Common.hpp"
 
-class Game : Mysystem::SceneMaster<std::string>::SceneBase
+class Game : public Myapp::SceneBase
 {
 public:
     Game();
@@ -13,3 +14,7 @@ public:
     ~Game();
 };
 
+class TestScene : public Myapp::SceneBase
+{
+	void update() override;
+};
