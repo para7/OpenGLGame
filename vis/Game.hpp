@@ -4,6 +4,9 @@
 #include <string>
 #include "Common.hpp"
 
+#include "Inputs.hpp"
+#include <iostream>
+
 class Game : public Myapp::SceneBase
 {
 public:
@@ -16,5 +19,17 @@ public:
 
 class TestScene : public Myapp::SceneBase
 {
-	void update() override;
+    void update() override
+    {
+        //        std::cout << "Second Scene" << std::endl;
+
+        if (Input::IsClicked('a'))
+        {
+            std::cout << "aaaaaaaa" << std::endl;
+        }
+        if (Input::IsPressed('b'))
+        {
+            std::cout << "b" << std::endl;
+        }
+    }
 };

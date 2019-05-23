@@ -64,7 +64,9 @@ void display(void)
 /// </summary>
 void idle(void)
 {
-    azimuth += 0.01;
+//    azimuth += 0.01;
+
+    Input::Update();
 
     if (!scenemasters.empty())
     {
@@ -148,42 +150,6 @@ void mySkey(int key, int x, int y)
     printf("x,y = %d %d\n", x, y);
     printf("key = %d\n", key);
     glutPostRedisplay();
-}
-
-/// <summary>
-/// キーが押されたときに呼び出される
-/// </summary>
-/// <remarks>
-/// ただし、ファンクションキーや方向キーはSpecialで行う
-/// </remarks>
-/// <param name="key">
-/// キー情報
-/// </param>
-/// <param name="x">
-/// マウスカーソル座標x
-/// </param>
-/// <param name="y">
-/// マウスカーソル座標y
-/// </param>
-void myKbd(unsigned char key, int x, int y)
-{
-    //Sample from c5-2.c
-
-    switch (key) {
-    case 'w':
-
-        break;
-    default:
-        std::cout << (int)key << std::endl;
-        break;
-        //esc27 del127 enter13 space32
-//    case KEY_ESC:
-//        exit(0);
-//       break;
-    }
-
-    //char型でキーの情報が送られてくるので
-    //switch caseで指定できる
 }
 
 /// <summary>

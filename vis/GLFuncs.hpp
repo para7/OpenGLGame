@@ -72,7 +72,7 @@ void mySkey(int key, int x, int y);
 /// <param name="y">
 /// マウスカーソル座標y
 /// </param>
-void myKbd(unsigned char key, int x, int y);
+//void myKbd(unsigned char key, int x, int y);
 
 /// <summary>
 /// 初期化

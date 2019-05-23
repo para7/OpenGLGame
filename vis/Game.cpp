@@ -17,8 +17,3 @@ void Game::update()
 Game::~Game()
 {
 }
-
-void TestScene::update()
-{
-	std::cout << "Second Scene" << std::endl;
-}

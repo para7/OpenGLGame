@@ -7,6 +7,7 @@
 #include "GL/gl.h"
 #include "GL/glu.h"
 #include "Init.hpp"
+#include "Inputs.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +22,9 @@ int main(int argc, char *argv[])
     glutDisplayFunc(display);
 
     //キーボードの入力を処理する関数を設定
-    glutKeyboardFunc(myKbd);
+    glutKeyboardFunc(Input::InputKbd);
+
+    glutKeyboardUpFunc(Input::ReleaseKbd);
 
     //ファンクションキー、矢印キーの入力を処理する関数を設定
     glutSpecialFunc(mySkey);

@@ -4,9 +4,12 @@
 #include "GLFuncs.hpp"
 #include <memory>
 #include <string>
+#include "Inputs.hpp"
 
 void MyInit()
 {
+    Input::Init();
+
 	auto app = std::make_shared<Myapp>();
 
 	app->Add<Game>("game");
