@@ -56,9 +56,9 @@ void Game::draw() const
     float ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 
     glPushMatrix();
-    glTranslatef(0.0, -0.3, -10);
+    //glTranslatef(0.0, -0.3, -10);
     //    glRotatef(-twist, 0.0, 0.0, 1.0);
-    glRotatef(50, 1.0, 0.0, 0.0);
+    //glRotatef(50, 1.0, 0.0, 0.0);
     //    glRotatef(-azimuth, 0.0, 1.0, 0.0);
         //polarview();
     glEnable(GL_DEPTH_TEST);
@@ -71,11 +71,16 @@ void Game::draw() const
     glMaterialf(GL_FRONT, GL_SHININESS, 128.0);
     glEnable(GL_LIGHTING);
 
-    Rectangle r1(0, 1, 0, 1, 2, 0, 0, 60);
-    Rectangle r2(1, 0, 1, 1, 2, 0, 60, 0);
 
-    r1.draw();
-    r2.draw();
+    Rectangle r(0, 0, -10, 1, 1, 60, 0, 0);
+    r.draw();                 //中央
+    r.Movedby(3, 0, 0).draw();//右の
+    r.Moveby(-3, 0, 0);
+    r.draw();                 //左の
+    r.Rotate(0, 45, 0);
+    r.Movedby(0, 4, -4).draw();//左の奥の
+    r.Rotated(0, 0, 30).Movedby(0, -2, 2).draw();//左の手前の
+
 
     //glDisable(GL_TEXTURE_2D);
     glPopMatrix();

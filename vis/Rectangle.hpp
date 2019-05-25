@@ -87,6 +87,8 @@ public:
         glRotated(ry, 0, 1.0, 0);
         glRotated(rz, 0, 0, 1.0);
 
+//        glScaled(1, 1, 1);
+
         glBegin(GL_POLYGON);
         for (i = 0; i < 4; ++i)
         {
