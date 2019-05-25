@@ -35,28 +35,20 @@ void PopSceneManager()
 /// </summary>
 void display(void)
 {
-    void my_axis();
     int i;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
-    //glEnable(GL_DEPTH_TEST);// Z Buffer の有効範囲の指定
-
-    //glPushMatrix();
-    //gluLookAt(0.34*distance, distance*1.732 / 3, -distance, 0., 0., 0., 0., 1., 0.);
-    //glPushMatrix();
-    //glutWireCube(1.0);/*　立方体　*/
-    //glPopMatrix();
-    //glPopMatrix();
-
-    //glDisable(GL_DEPTH_TEST); // Z Bufferの有効範囲の終わり
-
-    glutSwapBuffers();
-
+    
+    glEnable(GL_DEPTH_TEST);// Z Buffer の有効範囲の指定
     if (!scenemasters.empty())
     {
         scenemasters.top()->Draw();
     }
+    glDisable(GL_DEPTH_TEST); // Z Bufferの有効範囲の終わり
+
+    glutSwapBuffers();
 }
 
 /// <summary>
@@ -166,7 +158,9 @@ void glInits(char *progname)
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(width, height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+
     glutCreateWindow(progname);
+
     //背景色
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -177,5 +171,8 @@ void glInits(char *progname)
     glLoadIdentity();/*行列スタックをクリア*/
     gluPerspective(30., aspect, 1., 50.);
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
+
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHT0);
 }
 
