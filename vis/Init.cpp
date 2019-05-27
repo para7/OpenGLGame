@@ -13,7 +13,7 @@ void MyInit()
 	auto app = std::make_shared<Myapp>();
 
 	app->Add<Game>("game");
-	app->Add<TestScene>("next");
+	//app->Add<TestScene>("next");
 
 	PushSceneManager(app);
 }

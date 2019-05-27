@@ -169,7 +169,7 @@ void glInits(char *progname)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();/*行列スタックをクリア*/
-    gluPerspective(30., aspect, 1., 500.);
+    gluPerspective(30., aspect, 0.1, 500.);
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);

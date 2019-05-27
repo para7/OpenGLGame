@@ -3,74 +3,134 @@
 #include "GLincludes.h"
 #include <array>
 
-class GLEnableScope
+namespace Utils
 {
-private:
 
-    const GLenum _mode;
-
-public:
-
-    explicit GLEnableScope(GLenum mode)
-        : _mode(mode)
+    class GLEnableScope
     {
-        glEnable(_mode);
+    private:
+
+        const GLenum _mode;
+
+    public:
+
+        explicit GLEnableScope(GLenum mode)
+            : _mode(mode)
+        {
+            glEnable(_mode);
+        }
+
+        virtual ~GLEnableScope() final
+        {
+            glDisable(_mode);
+        }
+    };
+
+
+    struct Color
+    {
+        union
+        {
+            GLfloat color_array[4];
+
+            struct
+            {
+                GLfloat r;
+                GLfloat g;
+                GLfloat b;
+                GLfloat a;
+            };
+        };
+
+        Color()
+        {
+            r = g = b = a = 0;
+        }
+
+        Color(GLfloat _r, GLfloat _g, GLfloat _b, GLfloat _a)
+        {
+            r = _r;
+            g = _g;
+            b = _b;
+            a = _a;
+        }
+
+        Color(GLfloat _r, GLfloat _g, GLfloat _b)
+        {
+            r = _r;
+            g = _g;
+            b = _b;
+            a = 0;
+        }
+
+
+        void operator=(const Color& _c)
+        {
+            this->r = _c.r;
+            this->g = _c.g;
+            this->b = _c.b;
+            this->a = _c.a;
+        }
+    };
+
+
+    template <class T>
+    struct vector2d
+    {
+        T x, y;
+
+        vector2d() : x(0), y(0) {};
+
+        vector2d(const T&& _x, const T&& _y)
+            : x(_x)
+            , y(_y)
+        {}
+    };
+    using Vec2f = vector2d<GLfloat>;
+    using Vec2 = vector2d<GLdouble>;
+
+    template <class T>
+    struct vector3d
+    {
+        T x, y, z;
+
+        vector3d() : x(0), y(0), z(0) {};
+
+        vector3d(T _x, T _y, T _z)
+            : x(_x)
+            , y(_y)
+            , z(_z)
+        {}
+    };
+    using Vec3f = vector3d<GLfloat>;
+    using Vec3 = vector3d<GLdouble>;
+
+    //https://cpplover.blogspot.com/2014/10/c14-constexpr.html
+    // C++11ÇÃconstexprä÷êîÇ…ÇÊÇÈsqrtÇÃé¿ëï
+    template < typename T >
+    constexpr T sqrt_aux(T s, T x, T prev)
+    {
+        return x != prev ?
+            sqrt_aux(s, (x + s / x) / 2.0, x) : x;
     }
 
-    virtual ~GLEnableScope() final
+    template < typename T >
+    constexpr T sqrt(T s)
     {
-        glDisable(_mode);
-    }
-};
+        T x = s / 2.0;
+        T prev = 0.0;
 
-
-struct Color
-{
-    GLfloat color_array[4];
-    GLfloat& r, &g, &b, &a;
-
-    Color()
-        : r(color_array[0])
-        , g(color_array[1])
-        , b(color_array[2])
-        , a(color_array[3])
-//        , color_array({ 0,0,0,0 })
-    {
-        r = g = b = a = 0;
+        while (x != prev)
+        {
+            prev = x;
+            x = (x + s / x) / 2.0;
+        }
+        return x;
     }
 
-    Color(GLfloat _r, GLfloat _g, GLfloat _b, GLfloat _a)
-        : r(color_array[0])
-        , g(color_array[1])
-        , b(color_array[2])
-        , a(color_array[3])
-//        , color_array({ _r, _g, _b, _a })
+    template <typename T>
+    constexpr T pow2(T a)
     {
-        r = _r;
-        g = _g;
-        b = _b;
-        a = _a;
+        return a * a; 
     }
-
-    Color(GLfloat _r, GLfloat _g, GLfloat _b)
-        : r(color_array[0])
-        , g(color_array[1])
-        , b(color_array[2])
-        , a(color_array[3])
-//        , color_array({ _r, _g, _b, 0})
-    {
-        r = _r;
-        g = _g;
-        b = _b;
-        a = 0;
-    }
-
-
-    void operator=(const Color& _c)
-    {
-        this->r = _c.r;
-        this->g = _c.g;
-        this->b = _c.b;
-        this->a = _c.a;
-    }
-};
+}

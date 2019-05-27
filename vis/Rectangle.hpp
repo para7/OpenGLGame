@@ -1,6 +1,7 @@
 #pragma once
 #include "GLincludes.h"
 #include "Utilities.hpp"
+#include <algorithm>
 
 class Rectangle
 {
@@ -10,7 +11,7 @@ public:
 
     GLdouble rx, ry, rz;
 
-    Color color;
+    Utils::Color color;
 
 public:
 
@@ -78,15 +79,31 @@ public:
 
     void draw() const
     {
-        static const GLdouble vertex_data[4][3] = { 1.0,  0.0,  1.0,
-                                1.0,  0.0, -1.0,
-                               -1.0,  0.0, -1.0,
-                               -1.0,  0.0,  1.0 };
+        static const GLdouble vertex_data[4][3] =
+        {
+            1.0 ,  0.0,  1.0,
+            1.0 ,  0.0, -1.0,
+            -1.0,  0.0, -1.0,
+            -1.0,  0.0,  1.0 };
 
-        static const GLdouble normal_data[4][3] = { 0.447214,  0.774597,  0.447214,
-                                    0.447214,  0.774597, -0.447214,
-                                   -0.447214,  0.774597, -0.447214,
-                                   -0.447214,  0.774597,  0.447214 };
+        constexpr float nxz = 1, ny = 2.4;
+        constexpr float len = Utils::sqrt(Utils::pow2(nxz) + Utils::pow2(ny) + Utils::pow2(nxz));
+
+        static const GLdouble normal_data[4][3] =
+        {
+            nxz / len, ny / len, nxz / len,
+            nxz / len, ny / len, -nxz / len,
+            -nxz / len, ny / len, -nxz / len,
+            -nxz / len, ny / len, nxz / len,
+        };
+        //static const GLdouble normal_data[4][3] =
+        //{
+        //    0.447214 ,  0.774597,  0.447214,
+        //    0.447214 ,  0.774597, -0.447214,
+        //    -0.447214,  0.774597, -0.447214,
+        //    -0.447214,  0.774597,  0.447214
+        //};
+
         int i;
 
         glPushMatrix();
@@ -97,16 +114,15 @@ public:
         glRotated(ry, 0, 1.0, 0);
         glRotated(rz, 0, 0, 1.0);
         //ïœå`
-        glScaled(w, h, 1);
+        glScaled(w, 0, h);
 
         //íÖêF
-        GLfloat cc[4] = { color.r, color.g, color.b, 0};
-//        auto x = color.color_array.data();
-//        glMaterialfv(GL_FRONT, GL_DIFFUSE, color.color_array.data());
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, color.color_array);
-        auto x = color.color_array;
+        //glMaterialfv(GL_FRONT, GL_DIFFUSE, color.color_array);
+        glColor3fv(color.color_array);
 
-          glBegin(GL_POLYGON);
+        //VBOÇégÇ¡ÇƒÇ›ÇΩÇ¢Ç™éûä‘Ç™Ç»Ç¢
+
+        glBegin(GL_POLYGON);
         for (i = 0; i < 4; ++i)
         {
             glNormal3dv(normal_data[i]);
