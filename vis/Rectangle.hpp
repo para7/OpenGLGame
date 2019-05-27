@@ -1,5 +1,6 @@
 #pragma once
 #include "GLincludes.h"
+#include "Utilities.hpp"
 
 class Rectangle
 {
@@ -9,7 +10,10 @@ public:
 
     GLdouble rx, ry, rz;
 
+    Color color;
+
 public:
+
     Rectangle() {};
 
     Rectangle(GLdouble _x, GLdouble _y, GLdouble _z, GLdouble _w, GLdouble _h)
@@ -32,6 +36,13 @@ public:
     {}
 
     ~Rectangle() {};
+
+    inline void SetRotate(GLdouble _rx, GLdouble _ry, GLdouble _rz) noexcept
+    {
+        rx = _rx;
+        ry = _ry;
+        rz = _rz;
+    }
 
     inline void Rotate(GLdouble _rx, GLdouble _ry, GLdouble _rz) noexcept
     {
@@ -65,7 +76,6 @@ public:
         return ret;
     }
 
-
     void draw() const
     {
         static const GLdouble vertex_data[4][3] = { 1.0,  0.0,  1.0,
@@ -80,16 +90,23 @@ public:
         int i;
 
         glPushMatrix();
-
+        //à⁄ìÆ
         glTranslated(x, y, z);
-
+        //âÒì]
         glRotated(rx, 1.0, 0, 0);
         glRotated(ry, 0, 1.0, 0);
         glRotated(rz, 0, 0, 1.0);
+        //ïœå`
+        glScaled(w, h, 1);
 
-//        glScaled(1, 1, 1);
+        //íÖêF
+        GLfloat cc[4] = { color.r, color.g, color.b, 0};
+//        auto x = color.color_array.data();
+//        glMaterialfv(GL_FRONT, GL_DIFFUSE, color.color_array.data());
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, color.color_array);
+        auto x = color.color_array;
 
-        glBegin(GL_POLYGON);
+          glBegin(GL_POLYGON);
         for (i = 0; i < 4; ++i)
         {
             glNormal3dv(normal_data[i]);

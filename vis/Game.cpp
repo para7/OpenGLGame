@@ -51,7 +51,7 @@ void Game::draw() const
         }
     }
 
-    float diffuse[] = { 0.9, 0.9, 0.9, 1.0 };
+    float diffuse[] = { 0.9, 0.0, 0.9, 1.0 };
     float specular[] = { 1.0, 1.0, 1.0, 1.0 };
     float ambient[] = { 0.4, 0.4, 0.4, 1.0 };
 
@@ -65,21 +65,24 @@ void Game::draw() const
     //glEnable(GL_TEXTURE_2D);
 
     //光源設定
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
-    glMaterialf(GL_FRONT, GL_SHININESS, 128.0);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+    glMaterialf(GL_FRONT, GL_SHININESS, 70.0);
     glEnable(GL_LIGHTING);
 
-
     Rectangle r(0, 0, -10, 1, 1, 60, 0, 0);
+    r.color = Color(0.8, 0, 0.8, 0.5);
     r.draw();                 //中央
     r.Movedby(3, 0, 0).draw();//右の
     r.Moveby(-3, 0, 0);
+    
     r.draw();                 //左の
     r.Rotate(0, 45, 0);
     r.Movedby(0, 4, -4).draw();//左の奥の
     r.Rotated(0, 0, 30).Movedby(0, -2, 2).draw();//左の手前の
+
+
 
 
     //glDisable(GL_TEXTURE_2D);
