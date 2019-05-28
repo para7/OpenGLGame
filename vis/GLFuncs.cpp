@@ -173,6 +173,5 @@ void glInits(char *progname)
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHT0);
 }
 

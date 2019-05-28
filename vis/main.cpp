@@ -30,10 +30,10 @@ int main(int argc, char *argv[])
     glutSpecialFunc(mySkey);
 
     //マウスのクリックを処理する関数を設定
-    glutMouseFunc(myMouse);
+    //glutMouseFunc(myMouse);
 
     //マウスのドラッグを処理する関数を設定
-    glutMotionFunc(myMotion);
+    //glutMotionFunc(myMotion);
 
     //ウィンドウのサイズが変更されたときに処理する関数を設定
     glutReshapeFunc(myReshape);

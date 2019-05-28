@@ -86,10 +86,10 @@ public:
             -1.0,  0.0, -1.0,
             -1.0,  0.0,  1.0 };
 
-        constexpr float nxz = 1, ny = 2.4;
+        constexpr float nxz = 1, ny = 2.8;
         constexpr float len = Utils::sqrt(Utils::pow2(nxz) + Utils::pow2(ny) + Utils::pow2(nxz));
 
-        static const GLdouble normal_data[4][3] =
+        constexpr GLdouble normal_data[4][3] =
         {
             nxz / len, ny / len, nxz / len,
             nxz / len, ny / len, -nxz / len,
