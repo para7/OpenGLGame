@@ -81,12 +81,12 @@ public:
     {
         static const GLdouble vertex_data[4][3] =
         {
-            1.0 ,  0.0,  1.0,
-            1.0 ,  0.0, -1.0,
-            -1.0,  0.0, -1.0,
-            -1.0,  0.0,  1.0 };
+            0.5 ,  0.0,  0.5,
+            0.5 ,  0.0, -0.5,
+            -0.5,  0.0, -0.5,
+            -0.5,  0.0,  0.5 };
 
-        constexpr float nxz = 1, ny = 2.8;
+        constexpr float nxz = 1, ny = 2.4;
         constexpr float len = Utils::sqrt(Utils::pow2(nxz) + Utils::pow2(ny) + Utils::pow2(nxz));
 
         constexpr GLdouble normal_data[4][3] =
@@ -96,13 +96,6 @@ public:
             -nxz / len, ny / len, -nxz / len,
             -nxz / len, ny / len, nxz / len,
         };
-        //static const GLdouble normal_data[4][3] =
-        //{
-        //    0.447214 ,  0.774597,  0.447214,
-        //    0.447214 ,  0.774597, -0.447214,
-        //    -0.447214,  0.774597, -0.447214,
-        //    -0.447214,  0.774597,  0.447214
-        //};
 
         int i;
 

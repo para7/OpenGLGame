@@ -26,6 +26,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="SceneManager.hpp" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>

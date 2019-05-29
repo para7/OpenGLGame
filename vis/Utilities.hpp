@@ -81,7 +81,7 @@ namespace Utils
 
         vector2d() : x(0), y(0) {};
 
-        vector2d(const T&& _x, const T&& _y)
+        vector2d(const T& _x, const T& _y)
             : x(_x)
             , y(_y)
         {}
@@ -134,3 +134,5 @@ namespace Utils
         return a * a; 
     }
 }
+
+constexpr double PI = 3.141592653589793238;

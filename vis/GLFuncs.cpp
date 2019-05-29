@@ -11,6 +11,7 @@
 #include "Inputs.hpp"
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include "TimeSystem.h"
 
 float distance = 20., twist = 0., elevation = 30., azimuth = 20.;
 
@@ -59,6 +60,7 @@ void idle(void)
 //    azimuth += 0.01;
 
     Input::Update();
+    TimeSystem::Update();
 
     if (!scenemasters.empty())
     {
@@ -162,7 +164,7 @@ void glInits(char *progname)
     glutCreateWindow(progname);
 
     //背景色
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //垂直同期の設定
     glfwSwapInterval(1);
@@ -173,5 +175,9 @@ void glInits(char *progname)
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);
+
+    //片面表示
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 

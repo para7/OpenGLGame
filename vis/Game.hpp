@@ -7,14 +7,16 @@
 #include "Inputs.hpp"
 #include <iostream>
 #include <array>
-
+#include "Utilities.hpp"
 
 class Game : public Myapp::SceneBase
 {
-
 private:
 
     std::array<std::array<int, 10>, 10> mapdata;
+
+    Utils::Vec2 playerpos, lookpos;
+    double ang;
 
 public:
 
