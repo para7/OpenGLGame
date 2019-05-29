@@ -24,10 +24,10 @@
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
@@ -36,13 +36,13 @@
     <ClInclude Include="GLincludes.h" />
     <ClInclude Include="Init.hpp" />
     <ClInclude Include="Inputs.hpp" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="read_bitmap.h" />
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="SceneManager.hpp" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="TimeSystem.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>

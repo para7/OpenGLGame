@@ -3,26 +3,24 @@
 #include "SceneManager.hpp"
 #include <string>
 #include "Common.hpp"
-
 #include "Inputs.hpp"
 #include <iostream>
-#include <array>
+#include <vector>
 #include "Utilities.hpp"
 #include <random>
-
-constexpr Utils::Point mapsize(20, 20);
 
 class Game : public Myapp::SceneBase
 {
 private:
 
+    Utils::Point mapsize;
     std::random_device rd;
     std::mt19937 mt;
 
     float debug_eyelevel;
 
 
-    std::array<std::array<int, mapsize.x>, mapsize.y> mapdata;
+    std::vector<std::vector<int>> mapdata;
 
     Utils::Vec2 playerpos, lookpos;
     double ang;

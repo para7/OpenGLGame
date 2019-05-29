@@ -16,24 +16,20 @@ Game::Game()
     , chipsize(15)
     , mt(rd())
 {
-    playerpos = Vec2(chipsize, chipsize);
-    std::cout << "First Scene" << std::endl;
+    mapsize = { 20, 20 };
 
-    //マップの初期化
-    //for (int i = 0; i < mapdata.size(); ++i)
-    //{
-    //    for (int k = 0; k < mapdata[0].size(); ++k)
-    //    {
-    //        if (k % 2 == 1 || i % 2 == 1)
-    //        {
-    //            mapdata[i][k] = 1;
-    //        }
-    //        else
-    //        {
-    //            mapdata[i][k] = 0;
-    //        }
-    //    }
-    //}
+    if (Input::IsPressed('b'))
+    {
+        mapsize = { 40, 40 };
+    }
+    if (Input::IsPressed('c'))
+    {
+        mapsize = { 60, 60 };
+    }
+
+
+    playerpos = Vec2(chipsize, chipsize);
+
     Clustering();
 
     //上空
@@ -72,8 +68,8 @@ Game::Game()
 
 Game::~Game()
 {
-    glDisable(GL_LIGHT0);
     //光源解除
+    glDisable(GL_LIGHT0);
     glDisable(GL_LIGHT1);
 }
 
@@ -115,6 +111,15 @@ void Game::update()
     lookpos = playerpos;
     lookpos.x -= sin(ang);
     lookpos.y -= cos(ang);
+
+    //ゴール判定
+    auto x = (playerpos.x + chipsize / 2) / chipsize;
+    auto y = (playerpos.y + chipsize / 2) / chipsize;
+
+    if (mapdata[y][x] == 2)
+    {
+        changeScene("title");
+    }
 }
 
 void Game::draw() const
@@ -165,6 +170,11 @@ void Game::draw() const
 
             if (0 < mapdata[k][i])
             {
+                if (mapdata[k][i] == 2)//ゴール
+                {
+                    rr.color = Color(0.8, 0.8, 0);
+                }
+
                 //床
                 rr.draw();
             }
@@ -214,6 +224,13 @@ void Game::draw() const
 
 void Game::Clustering()
 {
+    //配列確保
+    mapdata.resize(mapsize.y);
+    for (auto& v : mapdata)
+    {
+        v.resize(mapsize.x);
+    }
+
     std::uniform_int_distribution<> randgen(0, 999);
 
     int number = 2;
