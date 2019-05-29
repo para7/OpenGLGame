@@ -5,7 +5,35 @@
 
 class Rectangle
 {
+private:
+
+    GLdouble normal_data[4][3];
+
 public:
+
+    void SetShader(float vertical, float side)
+    {
+        //       nxz = 1, ny = 1.4;
+        float len = Utils::sqrt(Utils::pow2(side) + Utils::pow2(vertical) + Utils::pow2(side));
+
+        float hoge[3] = { side / len, vertical / len, side / len };
+
+        constexpr float sign[4][3] =
+        {
+           1, 1, 1,
+           1, 1, -1,
+           -1, 1, -1,
+           -1, 1, 1,
+        };
+
+        for (int x = 0; x < 4; ++x)
+        {
+            for (int y = 0; y < 3; ++y)
+            {
+                normal_data[x][y] = hoge[y] * sign[x][y];
+            }
+        }
+    }
 
     GLdouble x, y, z, w, h;
 
@@ -13,9 +41,14 @@ public:
 
     Utils::Color color;
 
+    float shader;
+
 public:
 
-    Rectangle() {};
+    Rectangle()
+    {
+        SetShader(2.4, 1);
+    };
 
     Rectangle(GLdouble _x, GLdouble _y, GLdouble _z, GLdouble _w, GLdouble _h)
         : x(_x)
@@ -23,7 +56,9 @@ public:
         , z(_z)
         , w(_w)
         , h(_h)
-    {}
+    {
+        SetShader(2.4, 1);
+    }
 
     Rectangle(GLdouble _x, GLdouble _y, GLdouble _z, GLdouble _w, GLdouble _h, GLdouble _rx, GLdouble _ry, GLdouble _rz)
         : x(_x)
@@ -34,7 +69,9 @@ public:
         , rx(_rx)
         , ry(_ry)
         , rz(_rz)
-    {}
+    {
+        SetShader(2.4, 1);
+    }
 
     ~Rectangle() {};
 
@@ -84,17 +121,7 @@ public:
             0.5 ,  0.0,  0.5,
             0.5 ,  0.0, -0.5,
             -0.5,  0.0, -0.5,
-            -0.5,  0.0,  0.5 };
-
-        constexpr float nxz = 1, ny = 2.4;
-        constexpr float len = Utils::sqrt(Utils::pow2(nxz) + Utils::pow2(ny) + Utils::pow2(nxz));
-
-        constexpr GLdouble normal_data[4][3] =
-        {
-            nxz / len, ny / len, nxz / len,
-            nxz / len, ny / len, -nxz / len,
-            -nxz / len, ny / len, -nxz / len,
-            -nxz / len, ny / len, nxz / len,
+            -0.5,  0.0,  0.5
         };
 
         int i;

@@ -92,7 +92,7 @@ void myReshape(int width, int height)
     glLoadIdentity();
 
     //アスペクト比に合わせて描画範囲を再設定
-    gluPerspective(45.0, aspect, 1.0, 50.0);
+    gluPerspective(45.0, aspect, 1.0, 450.0);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -164,14 +164,14 @@ void glInits(char *progname)
     glutCreateWindow(progname);
 
     //背景色
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.22, 1.0);
 
-    //垂直同期の設定
+    //垂直同期の設定(できてなさそう)
     glfwSwapInterval(1);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();/*行列スタックをクリア*/
-    gluPerspective(30., aspect, 0.1, 500.);
+    gluPerspective(45.0, aspect, 1.0, 450.0);
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);

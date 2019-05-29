@@ -9,14 +9,23 @@
 #include <array>
 #include "Utilities.hpp"
 
+constexpr Utils::Point mapsize(20, 20);
+
 class Game : public Myapp::SceneBase
 {
 private:
 
-    std::array<std::array<int, 10>, 10> mapdata;
+    float debug_eyelevel;
+
+
+    std::array<std::array<int, mapsize.x>, mapsize.y> mapdata;
 
     Utils::Vec2 playerpos, lookpos;
     double ang;
+
+    double chipsize;
+
+    void Clustering();
 
 public:
 
