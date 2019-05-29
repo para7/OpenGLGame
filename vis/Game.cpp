@@ -5,107 +5,18 @@
 #include "TimeSystem.h"
 #include <vector>
 #include <queue>
-#include <random>
 #include <algorithm>
 
 using namespace Utils;
 
 constexpr std::array<Point, 4u> Surround = { Point(0,1),Point(-1,0),Point(0, -1),Point(1, 0) };
 
-void Game::Clustering()
-{
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<> randgen(0, 99);
-
-    int number = 2;
-    Utils::Point rb;
-    std::vector<Point> breakwall;
-
-    int Wall = 0;
-
-    for (int i = 0; i < mapsize.x; ++i)
-    {
-        for (int k = 0; k < mapsize.y; ++k)
-        {
-            mapdata[i][k] = Wall;
-            if ((1 <= i && i < mapsize.x - 1) && (1 <= k && k < mapsize.y - 1))
-            {
-                if ((i % 2) && (k % 2))
-                {
-                    mapdata[i][k] = number++;
-                    rb = { i, k };
-                }
-                else if ((i % 2) ^ (k % 2) && (i < mapsize.x - 2) && (k < mapsize.y - 2))
-                {
-                    if (i % 2)
-                    {
-                        mapdata[i][k] = -1;
-                    }
-                    else
-                    {
-                        mapdata[i][k] = -2;
-                    }
-                    breakwall.emplace_back(Point(i, k));
-                }
-            }
-        }
-    }
-    
-    std::shuffle(breakwall.begin(), breakwall.end(), mt);
-    
-    for (const auto& pos : breakwall)
-    {
-        int info1, info2;
-
-        if (mapdata[pos.y][pos.x] == -1)
-        {
-            info1 = mapdata[pos.y + 0][pos.x + 1];
-            info2 = mapdata[pos.y + 0][pos.x - 1];
-        }
-        else if (mapdata[pos.y][pos.x] == -2)//よこ
-        {
-            info1 = mapdata[pos.y + 1][pos.x];
-            info2 = mapdata[pos.y - 1][pos.x];
-        }
-
-        if (info1 != info2)
-        {
-            std::queue<Point> qu;
-            mapdata[pos.y][pos.x] = info1;
-            qu.push(pos);
-
-            while (qu.size())
-            {
-                const auto basepos = qu.front();
-
-                for (const auto& surrond : Surround)
-                {
-                    const auto pos = basepos.movedBy(surrond);
-                    auto& hoge = mapdata[pos.y][pos.x];
-                    if (hoge != info1 &&
-                        hoge != Wall &&
-                        0 < hoge)
-                    {
-                        hoge = info1;
-                        qu.push(pos);
-                    }
-                }
-                qu.pop();
-            }
-        }
-        else
-        {
-            mapdata[pos.y][pos.x] = Wall;
-        }
-    }
-}
-
 Game::Game()
-    : playerpos(0,0)
-    , ang(PI)
+    : ang(PI)
     , chipsize(15)
+    , mt(rd())
 {
+    playerpos = Vec2(chipsize, chipsize);
     std::cout << "First Scene" << std::endl;
 
     //マップの初期化
@@ -204,8 +115,6 @@ void Game::update()
     lookpos = playerpos;
     lookpos.x -= sin(ang);
     lookpos.y -= cos(ang);
-
-    //    gluLookAt(playerpos.x, 5, playerpos.y, lookpos.x, 5, lookpos.y, 0, 1, 0);
 }
 
 void Game::draw() const
@@ -216,7 +125,7 @@ void Game::draw() const
 
     glPushMatrix();
 
-    float eyelevel = 0.8;
+    float eyelevel = 3.5;
 
     gluLookAt(
         playerpos.x, eyelevel + debug_eyelevel, playerpos.y,
@@ -241,49 +150,56 @@ void Game::draw() const
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128.0);
     glEnable(GL_LIGHTING);
 
-    Rectangle r(0, -3, -10, chipsize, chipsize, 0, 0, 0);
+    Rectangle r(0, 0, 0, chipsize, chipsize, 0, 0, 0);
     r.color = Color(0, 0.7, 0, 0.5);
     r.SetShader(1, 0);
+
+
+    std::uniform_int_distribution<> randgen(0, 999);
 
     for (int i = 0; i < mapdata.size(); ++i)
     {
         for (int k = 0; k < mapdata[0].size(); ++k)
         {
-            auto rr = r.Movedby(r.w * (i - 5), 0, r.h * (k - 5));
+            auto rr = r.Movedby(r.w * (i), 0, r.h * (k));
 
-            if (0 < mapdata[i][k])
+            if (0 < mapdata[k][i])
             {
                 //床
                 rr.draw();
             }
             else//mapdata[i][k] == 0
             {
-                rr.color = Color(0.7, 0, 0);
-                rr.draw();
-                ////壁
+                if (Input::IsPressed('k'))
+                {
+                    rr.color = Color(0.7, 0, 0);
+                    rr.draw();
+                    continue;
+                }
+                //壁
 
-                ////高さ合わせ
-                //rr.Moveby(0, r.h / 2, 0);
-                ////色
-                //rr.color = Color(0.5, 0.2, 0, 0);
-                ////シェーダー調整
-                //rr.SetShader(1, 0.2);
+                //高さ合わせ
+                rr.Moveby(0, r.h / 2, 0);
+                //色
+                rr.color = Color(0.5, 0.2, 0, 0);
+                //シェーダー調整
+                rr.SetShader(1, 0.2);
 
-                //auto rw = rr.Movedby(0, 0, rr.h / 2);
-                //rw.Rotate(90, 0, 0);
-                //rw.draw();
+                auto rw = rr.Movedby(0, 0, rr.h / 2);
+                rw.Rotate(90, 0, 0);
+                rw.draw();
 
-                //rw.Moveby(0, 0, -rr.h);
-                //rw.Rotate(180, 0, 0);
-                //rw.draw();
+                rw.Moveby(0, 0, -rr.h);
+                rw.Rotate(180, 0, 0);
+                rw.draw();
 
-                //rw = rr.Movedby(rr.h / 2, 0, 0);
-                //rw.Rotate(0, 0, -90);
-                //rw.draw();
+                rw = rr.Movedby(rr.h / 2, 0, 0);
+                rw.Rotate(0, 0, -90);
+                rw.draw();
 
-                //rw.Moveby(rr.w, 0, 0);
-                //rw.Rotate(0, 0, 180);
-                //rw.draw();
+                rw.Moveby(-rr.h, 0, 0);
+                rw.Rotate(0, 0, 180);
+                rw.draw();
             }
         }
     }
@@ -293,4 +209,106 @@ void Game::draw() const
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+}
+
+
+void Game::Clustering()
+{
+    std::uniform_int_distribution<> randgen(0, 999);
+
+    int number = 2;
+    Utils::Point rb;//right bottom
+    std::vector<Point> breakwall;
+
+    //壁の数値
+    int Wall = 0;
+
+    for (int i = 0; i < mapsize.x; ++i)
+    {
+        for (int k = 0; k < mapsize.y; ++k)
+        {
+            mapdata[i][k] = Wall;
+            if ((1 <= i && i < mapsize.x - 1) && (1 <= k && k < mapsize.y - 1))
+            {
+                if ((i % 2) && (k % 2))
+                {
+                    mapdata[i][k] = number++;
+                    rb = { i, k };
+                }
+                else if ((i % 2) ^ (k % 2) && (i < mapsize.x - 2) && (k < mapsize.y - 2))
+                {
+                    if (i % 2)
+                    {
+                        mapdata[i][k] = -1;
+                        rb = { i, k };
+                    }
+                    else
+                    {
+                        mapdata[i][k] = -2;
+                    }
+                    breakwall.emplace_back(Point(i, k));
+                }
+            }
+        }
+    }
+
+    std::shuffle(breakwall.begin(), breakwall.end(), mt);
+
+    for (const auto& pos : breakwall)
+    {
+        int info1, info2;
+
+        if (mapdata[pos.y][pos.x] == -1)
+        {
+            info1 = mapdata[pos.y + 0][pos.x + 1];
+            info2 = mapdata[pos.y + 0][pos.x - 1];
+        }
+        else if (mapdata[pos.y][pos.x] == -2)//よこ
+        {
+            info1 = mapdata[pos.y + 1][pos.x];
+            info2 = mapdata[pos.y - 1][pos.x];
+        }
+
+        if (info1 != info2 || randgen(mt) < 30)
+        {
+            std::queue<Point> qu;
+            mapdata[pos.y][pos.x] = info1;
+            qu.push(pos);
+
+            while (qu.size())
+            {
+                const auto basepos = qu.front();
+
+                for (const auto& surrond : Surround)
+                {
+                    const auto pos = basepos.movedBy(surrond);
+
+                    auto& hoge = mapdata[pos.y][pos.x];
+
+                    if (hoge != info1 &&
+                        hoge != Wall &&
+                        0 < hoge)
+                    {
+                        hoge = info1;
+                        qu.push(pos);
+                    }
+                }
+                qu.pop();
+            }
+        }
+        else
+        {
+            mapdata[pos.y][pos.x] = Wall;
+        }
+    }
+
+    for (int i = 0; i < mapsize.x; ++i)
+    {
+        for (int k = 0; k < mapsize.y; ++k)
+        {
+            mapdata[i][k] = mapdata[i][k] == 0 ? 0 : 1;
+        }
+    }
+    //ゴール設置
+    mapdata[rb.x][rb.y] = 2;
 }

@@ -24,6 +24,7 @@
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="GLincludes.h" />
     <ClInclude Include="Init.hpp" />
     <ClInclude Include="Inputs.hpp" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="read_bitmap.h" />
     <ClInclude Include="Rectangle.hpp" />

@@ -8,12 +8,16 @@
 #include <iostream>
 #include <array>
 #include "Utilities.hpp"
+#include <random>
 
 constexpr Utils::Point mapsize(20, 20);
 
 class Game : public Myapp::SceneBase
 {
 private:
+
+    std::random_device rd;
+    std::mt19937 mt;
 
     float debug_eyelevel;
 
