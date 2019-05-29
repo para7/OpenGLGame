@@ -33,7 +33,7 @@ public:
         static long long sum = 0;
         sum += deltatime;
 
-        std::cout << DeltaTime() << "sum:" << sum << std::endl;
+        //std::cout << DeltaTime() << "sum:" << sum << std::endl;
     }
 
     static void Init()
