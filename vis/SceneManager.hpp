@@ -89,6 +89,7 @@ namespace Mysystem
 
             changereserve = true;
             nextscenename = next;
+            return true;
         }
 
         void Update()

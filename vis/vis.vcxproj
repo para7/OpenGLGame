@@ -28,6 +28,7 @@
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="WindowInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Utilities.hpp" />
+    <ClInclude Include="WindowInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

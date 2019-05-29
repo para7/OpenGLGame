@@ -12,6 +12,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "TimeSystem.h"
+#include "WindowInfo.h"
 
 float distance = 20., twist = 0., elevation = 30., azimuth = 20.;
 
@@ -36,8 +37,6 @@ void PopSceneManager()
 /// </summary>
 void display(void)
 {
-    int i;
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glClear(GL_COLOR_BUFFER_BIT);
 
@@ -95,6 +94,8 @@ void myReshape(int width, int height)
     gluPerspective(45.0, aspect, 1.0, 450.0);
 
     glMatrixMode(GL_MODELVIEW);
+
+    Window::SetWindowSize(width, height);
 
     //çƒï`âÊÇó\ñÒ
     glutPostRedisplay();
@@ -159,6 +160,7 @@ void glInits(char *progname)
 
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(width, height);
+    Window::SetWindowSize(width, height);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
     glutCreateWindow(progname);

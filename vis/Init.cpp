@@ -6,13 +6,14 @@
 #include <string>
 #include "Inputs.hpp"
 #include "TimeSystem.h"
+#include "Title.h"
 
 void MyInit()
 {
 	auto app = std::make_shared<Myapp>();
 
+	app->Add<Title>("title");
 	app->Add<Game>("game");
-	//app->Add<TestScene>("next");
 
 	PushSceneManager(app);
 }

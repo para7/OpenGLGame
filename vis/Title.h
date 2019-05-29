@@ -9,5 +9,6 @@ public:
     ~Title();
 
     void update() override;
+    void draw() const override;
 };
 

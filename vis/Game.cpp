@@ -78,6 +78,8 @@ void Game::update()
     double spd = TimeSystem::DeltaTime() * 20;
     double turnspd = 5;
 
+    const auto beforepos = playerpos;
+
     if (Input::IsPressed('z'))
     {
         debug_eyelevel += spd * 2;
@@ -116,9 +118,20 @@ void Game::update()
     auto x = (playerpos.x + chipsize / 2) / chipsize;
     auto y = (playerpos.y + chipsize / 2) / chipsize;
 
-    if (mapdata[y][x] == 2)
+    switch (mapdata[y][x])
     {
+    case 0://壁
+        if (Input::IsPressed('k'))
+        {
+            break;
+        }
+        playerpos = beforepos;
+        break;
+    case 2://ゴール
         changeScene("title");
+        break;
+    default:
+        break;
     }
 }
 
@@ -162,9 +175,9 @@ void Game::draw() const
 
     std::uniform_int_distribution<> randgen(0, 999);
 
-    for (int i = 0; i < mapdata.size(); ++i)
+    for (unsigned i = 0; i < mapdata.size(); ++i)
     {
-        for (int k = 0; k < mapdata[0].size(); ++k)
+        for (unsigned k = 0; k < mapdata[0].size(); ++k)
         {
             auto rr = r.Movedby(r.w * (i), 0, r.h * (k));
 
