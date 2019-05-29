@@ -9,7 +9,7 @@
 #include <array>
 #include "Utilities.hpp"
 
-constexpr Utils::Point mapsize(40, 40);
+constexpr Utils::Point mapsize(20, 20);
 
 class Game : public Myapp::SceneBase
 {

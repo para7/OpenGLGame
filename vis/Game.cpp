@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include <random>
+#include <algorithm>
 
 using namespace Utils;
 
@@ -15,9 +16,9 @@ void Game::Clustering()
 {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<> randgen(0, 999);
+    std::uniform_int_distribution<> randgen(0, 99);
 
-    int number = 1;
+    int number = 2;
     Utils::Point rb;
     std::vector<Point> breakwall;
 
@@ -27,50 +28,51 @@ void Game::Clustering()
     {
         for (int k = 0; k < mapsize.y; ++k)
         {
-            mapdata[k][i] = Wall;
+            mapdata[i][k] = Wall;
             if ((1 <= i && i < mapsize.x - 1) && (1 <= k && k < mapsize.y - 1))
             {
                 if ((i % 2) && (k % 2))
                 {
-                    mapdata[k][i] = number++;
+                    mapdata[i][k] = number++;
                     rb = { i, k };
                 }
                 else if ((i % 2) ^ (k % 2) && (i < mapsize.x - 2) && (k < mapsize.y - 2))
                 {
                     if (i % 2)
                     {
-                        mapdata[k][i] = -1;
+                        mapdata[i][k] = -1;
                     }
                     else
                     {
-                        mapdata[k][i] = -2;
+                        mapdata[i][k] = -2;
                     }
                     breakwall.emplace_back(Point(i, k));
                 }
             }
         }
     }
-    //    breakwall.shuffle();
-
+    
+    std::shuffle(breakwall.begin(), breakwall.end(), mt);
+    
     for (const auto& pos : breakwall)
     {
         int info1, info2;
 
-        if (mapdata[pos.x][pos.y] == -1)
+        if (mapdata[pos.y][pos.x] == -1)
         {
-            info1 = mapdata[pos.x + 0][pos.y + 1];
-            info2 = mapdata[pos.x + 0][pos.y - 1];
+            info1 = mapdata[pos.y + 0][pos.x + 1];
+            info2 = mapdata[pos.y + 0][pos.x - 1];
         }
-        else if (mapdata[pos.x][pos.y] == -2)//よこ
+        else if (mapdata[pos.y][pos.x] == -2)//よこ
         {
-            info1 = mapdata[pos.x + 1][pos.y];
-            info2 = mapdata[pos.x - 1][pos.y];
+            info1 = mapdata[pos.y + 1][pos.x];
+            info2 = mapdata[pos.y - 1][pos.x];
         }
 
-        if (info1 != info2 || randgen(mt) < 15)
+        if (info1 != info2)
         {
             std::queue<Point> qu;
-            mapdata[pos.x][pos.y] = info1;
+            mapdata[pos.y][pos.x] = info1;
             qu.push(pos);
 
             while (qu.size())
@@ -80,7 +82,7 @@ void Game::Clustering()
                 for (const auto& surrond : Surround)
                 {
                     const auto pos = basepos.movedBy(surrond);
-                    auto& hoge = mapdata[pos.x][pos.y];
+                    auto& hoge = mapdata[pos.y][pos.x];
                     if (hoge != info1 &&
                         hoge != Wall &&
                         0 < hoge)
@@ -94,14 +96,14 @@ void Game::Clustering()
         }
         else
         {
-            mapdata[pos.x][pos.y] = Wall;
+            mapdata[pos.y][pos.x] = Wall;
         }
     }
 }
 
 Game::Game()
-    : playerpos(0, 0)
-    , ang(0)
+    : playerpos(0,0)
+    , ang(PI)
     , chipsize(15)
 {
     std::cout << "First Scene" << std::endl;
@@ -256,30 +258,32 @@ void Game::draw() const
             }
             else//mapdata[i][k] == 0
             {
-                //壁
+                rr.color = Color(0.7, 0, 0);
+                rr.draw();
+                ////壁
 
-                //高さ合わせ
-                rr.Moveby(0, r.h / 2, 0);
-                //色
-                rr.color = Color(0.5, 0.2, 0, 0);
-                //シェーダー調整
-                rr.SetShader(1, 0.2);
+                ////高さ合わせ
+                //rr.Moveby(0, r.h / 2, 0);
+                ////色
+                //rr.color = Color(0.5, 0.2, 0, 0);
+                ////シェーダー調整
+                //rr.SetShader(1, 0.2);
 
-                auto rw = rr.Movedby(0, 0, rr.h / 2);
-                rw.Rotate(90, 0, 0);
-                rw.draw();
+                //auto rw = rr.Movedby(0, 0, rr.h / 2);
+                //rw.Rotate(90, 0, 0);
+                //rw.draw();
 
-                rw.Moveby(0, 0, -rr.h);
-                rw.Rotate(180, 0, 0);
-                rw.draw();
+                //rw.Moveby(0, 0, -rr.h);
+                //rw.Rotate(180, 0, 0);
+                //rw.draw();
 
-                rw = rr.Movedby(rr.h / 2, 0, 0);
-                rw.Rotate(0, 0, -90);
-                rw.draw();
+                //rw = rr.Movedby(rr.h / 2, 0, 0);
+                //rw.Rotate(0, 0, -90);
+                //rw.draw();
 
-                rw.Moveby(rr.w, 0, 0);
-                rw.Rotate(0, 0, 180);
-                rw.draw();
+                //rw.Moveby(rr.w, 0, 0);
+                //rw.Rotate(0, 0, 180);
+                //rw.draw();
             }
         }
     }

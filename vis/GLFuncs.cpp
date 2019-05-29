@@ -92,7 +92,7 @@ void myReshape(int width, int height)
     glLoadIdentity();
 
     //アスペクト比に合わせて描画範囲を再設定
-    gluPerspective(45.0, aspect, 1.0, 150.0);
+    gluPerspective(45.0, aspect, 1.0, 450.0);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -171,7 +171,7 @@ void glInits(char *progname)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();/*行列スタックをクリア*/
-    gluPerspective(45.0, aspect, 1.0, 150.0);
+    gluPerspective(45.0, aspect, 1.0, 450.0);
     glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);
