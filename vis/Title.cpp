@@ -28,8 +28,8 @@ void Title::draw() const
     auto size = Window::GetWindowSize();
     int y = 20;
     Utils::DrawString("how to play", size.x, size.y, 20, 20 + y);
-    Utils::DrawString("W : go ahead", size.x, size.y, 40, 50 + y);
-    Utils::DrawString("S : back", size.x, size.y, 40, 90 + y);
+    Utils::DrawString("W   : go ahead", size.x, size.y, 40, 50 + y);
+    Utils::DrawString("S   : back", size.x, size.y, 40, 90 + y);
     Utils::DrawString("A,D : turn", size.x, size.y, 40, 70 + y);
     Utils::DrawString("play start -> A or B or C", size.x, size.y, 20, 150 + y);
     Utils::DrawString("select stage size.", size.x, size.y, 60, 180 + y);
