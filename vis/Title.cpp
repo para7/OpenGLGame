@@ -4,7 +4,8 @@
 #include "Utilities.hpp"
 #include "WindowInfo.h"
 
-Title::Title()
+Title::Title(Myapp app)
+    : SceneBase(app)
 {
 }
 

@@ -6,7 +6,7 @@
 
 namespace Mysystem
 {
-    template <class Key>
+    template <class Key, class Common>
     class SceneMaster
     {
     public:
@@ -15,32 +15,42 @@ namespace Mysystem
 
     public:
 
+        // <SceneBase>
+
         class SceneBase
         {
         private:
 
-            SceneMaster<Key>* master;
+            SceneMaster<Key, Common>& master;
 
         protected:
 
             virtual void changeScene(const Key& next) final
             {
-                master->changeScene(next);
+                master.changeScene(next);
+            }
+
+            inline Common& getCommon()
+            {
+                return master.GetCommonData();
             }
 
         public:
 
-            virtual void setdata(SceneMaster<Key>* _master) final
-            {
-                master = _master;
-            }
+            SceneBase(SceneMaster<Key, Common>& _master)
+                : master(_master)
+            {}
 
             virtual void update() {}
             virtual void draw() const {}
             virtual ~SceneBase() {}
         };
 
+        // </SceneBase>
+
     private:
+
+        std::shared_ptr< Common > commondata;
 
         std::shared_ptr<SceneBase> currentscene;
 
@@ -50,14 +60,24 @@ namespace Mysystem
 
         Key nextscenename;
 
+    public: //プロパティ
+
+        inline Common GetCommonData()
+        {
+            return commondata;
+        }
+
     public:
 
         template <class SceneType>
+        /// <summary>
+        /// シーンの追加
+        /// </summary>
+        /// <param name="key">シーン指定方法</param>
         void Add(const Key& key)
         {
             auto factory = [=]() {
-                auto val = std::make_shared<SceneType>();
-                val->setdata(this);
+                auto val = std::make_shared<SceneType>(*this);
                 return val;
             };
 
@@ -121,6 +141,8 @@ namespace Mysystem
         SceneMaster()
             : changereserve(false)
             , scenelist()
-        {}
+        {
+            commondata = std::make_shared<Common>();
+        }
     };
 }

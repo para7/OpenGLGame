@@ -11,10 +11,11 @@ using namespace Utils;
 
 constexpr std::array<Point, 4u> Surround = { Point(0,1),Point(-1,0),Point(0, -1),Point(1, 0) };
 
-Game::Game()
+Game::Game(Myapp app)
     : ang(PI)
     , chipsize(15)
     , mt(rd())
+    , SceneBase(app)
 {
     mapsize = { 20, 20 };
 
@@ -62,6 +63,9 @@ Game::Game()
     }
 
     glEnable(GL_COLOR_MATERIAL);
+
+    //両面描画にする
+    glDisable(GL_CULL_FACE);
 
     debug_eyelevel = 0;
 }

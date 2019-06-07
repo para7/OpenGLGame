@@ -31,7 +31,7 @@ private:
 
 public:
 
-    Game();
+    Game(Myapp app);
 
     void update() override;
 

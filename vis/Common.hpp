@@ -2,4 +2,9 @@
 
 #include "SceneManager.hpp"
 
-using Myapp = Mysystem::SceneMaster <std::string>;
+struct Common
+{
+    unsigned mapsize;
+};
+
+using Myapp = Mysystem::SceneMaster <std::string, Common>;

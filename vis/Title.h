@@ -5,7 +5,7 @@
 class Title : public Myapp::SceneBase
 {
 public:
-    Title();
+    Title(Myapp app);
     ~Title();
 
     void update() override;
