@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawString.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLFuncs.cpp" />
     <ClCompile Include="Init.cpp" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.hpp" />
+    <ClInclude Include="DrawString.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GLFuncs.hpp" />
     <ClInclude Include="GLincludes.h" />
@@ -40,11 +42,14 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="read_bitmap.h" />
     <ClInclude Include="Rectangle.hpp" />
+    <ClInclude Include="Result.hpp" />
     <ClInclude Include="SceneManager.hpp" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="StopWatch.hpp" />
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="Utilities.hpp" />
+    <ClInclude Include="Vec23.hpp" />
     <ClInclude Include="WindowInfo.h" />
   </ItemGroup>
   <ItemGroup>

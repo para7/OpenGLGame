@@ -7,6 +7,7 @@
 #include "Inputs.hpp"
 #include "TimeSystem.h"
 #include "Title.h"
+#include "Result.hpp"
 
 void MyInit()
 {
@@ -14,6 +15,7 @@ void MyInit()
 
 	app->Add<Title>("title");
 	app->Add<Game>("game");
+    app->Add<Result>("result");
 
 	PushSceneManager(app);
 }

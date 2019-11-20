@@ -2,6 +2,8 @@
 
 #include "GLincludes.h"
 #include <array>
+#include "Vec23.hpp"
+#include "DrawString.hpp"
 
 namespace Utils
 {
@@ -74,55 +76,6 @@ namespace Utils
     };
 
 
-    template <class T>
-    struct vector2d
-    {
-        T x, y;
-
-        constexpr vector2d() : x(0), y(0) {};
-
-        constexpr vector2d(const T& _x, const T& _y)
-            : x(_x)
-            , y(_y)
-        {}
-
-        vector2d movedBy(T& _x, T& _y) const
-        {
-            vector2d ret = vector2d(*this);
-            ret.x += _x;
-            ret.y += _y;
-            return ret;
-        }
-
-        vector2d movedBy(const vector2d& v) const
-        {
-            vector2d ret = vector2d(*this);
-            ret.x += v.x;
-            ret.y += v.y;
-            return ret;
-        }
-    };
-
-    using Vec2f = vector2d<GLfloat>;
-    using Vec2 = vector2d<GLdouble>;
-    using Point = vector2d<int>;
-
-    template <class T>
-    struct vector3d
-    {
-        T x, y, z;
-
-        constexpr vector3d() : x(0), y(0), z(0) {};
-
-        constexpr vector3d(T _x, T _y, T _z)
-            : x(_x)
-            , y(_y)
-            , z(_z)
-        {}
-    };
-    using Vec3f = vector3d<GLfloat>;
-    using Vec3 = vector3d<GLdouble>;
-
     //https://cpplover.blogspot.com/2014/10/c14-constexpr.html
     // C++11のconstexpr関数によるsqrtの実装
     template < typename T >
@@ -152,33 +105,6 @@ namespace Utils
         return a * a; 
     }
 
-    //http://slis.tsukuba.ac.jp/~fujisawa.makoto.fu/lecture/iml/text/screen_character.html
-    static void DrawString(std::string str, int w, int h, int x0, int y0)
-    {
-        glDisable(GL_LIGHTING);
-        // 平行投影にする
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        gluOrtho2D(0, w, h, 0);
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-
-        // 画面上にテキスト描画
-        glRasterPos2f(x0, y0);
-        int size = (int)str.size();
-        for (int i = 0; i < size; ++i)
-        {
-            char ic = str[i];
-            glutBitmapCharacter(GLUT_BITMAP_9_BY_15, ic);
-        }
-
-        glPopMatrix();
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
-    }
 }
 
 constexpr double PI = 3.141592653589793238;

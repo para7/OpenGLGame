@@ -8,6 +8,7 @@
 #include <vector>
 #include "Utilities.hpp"
 #include <random>
+#include "StopWatch.hpp"
 
 class Game : public Myapp::SceneBase
 {
@@ -19,6 +20,7 @@ private:
 
     float debug_eyelevel;
 
+    StopWatch watch;
 
     std::vector<std::vector<int>> mapdata;
 
@@ -29,9 +31,12 @@ private:
 
     void Clustering();
 
+    bool wallhack;
+    StopWatch hacktime;
+
 public:
 
-    Game(Myapp app);
+    Game(Myapp* app);
 
     void update() override;
 

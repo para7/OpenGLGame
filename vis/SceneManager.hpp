@@ -21,23 +21,28 @@ namespace Mysystem
         {
         private:
 
-            SceneMaster<Key, Common>& master;
+            SceneMaster<Key, Common>* master;
 
         protected:
 
             virtual void changeScene(const Key& next) final
             {
-                master.changeScene(next);
+                master->changeScene(next);
             }
 
-            inline Common& getCommon()
+            std::shared_ptr<Common> getCommon()
             {
-                return master.GetCommonData();
+                return master->commondata;
+            }
+
+            std::shared_ptr<Common> getCommon() const
+            {
+                return master->commondata;
             }
 
         public:
 
-            SceneBase(SceneMaster<Key, Common>& _master)
+            SceneBase(SceneMaster<Key, Common>* _master)
                 : master(_master)
             {}
 
@@ -50,7 +55,6 @@ namespace Mysystem
 
     private:
 
-        std::shared_ptr< Common > commondata;
 
         std::shared_ptr<SceneBase> currentscene;
 
@@ -60,9 +64,11 @@ namespace Mysystem
 
         Key nextscenename;
 
-    public: //プロパティ
+    public:
 
-        inline Common GetCommonData()
+        std::shared_ptr< Common > commondata;
+
+        inline std::shared_ptr<Common> GetCommonData()
         {
             return commondata;
         }
@@ -77,7 +83,7 @@ namespace Mysystem
         void Add(const Key& key)
         {
             auto factory = [=]() {
-                auto val = std::make_shared<SceneType>(*this);
+                auto val = std::make_shared<SceneType>(this);
                 return val;
             };
 
@@ -141,8 +147,8 @@ namespace Mysystem
         SceneMaster()
             : changereserve(false)
             , scenelist()
+            , commondata(std::make_shared<Common>())
         {
-            commondata = std::make_shared<Common>();
         }
     };
 }

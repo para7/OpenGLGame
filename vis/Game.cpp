@@ -11,23 +11,14 @@ using namespace Utils;
 
 constexpr std::array<Point, 4u> Surround = { Point(0,1),Point(-1,0),Point(0, -1),Point(1, 0) };
 
-Game::Game(Myapp app)
+Game::Game(Myapp* app)
     : ang(PI)
     , chipsize(15)
     , mt(rd())
     , SceneBase(app)
+    , wallhack(false)
 {
-    mapsize = { 20, 20 };
-
-    if (Input::IsPressed('b'))
-    {
-        mapsize = { 40, 40 };
-    }
-    if (Input::IsPressed('c'))
-    {
-        mapsize = { 60, 60 };
-    }
-
+    mapsize = { static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize) };
 
     playerpos = Vec2(chipsize, chipsize);
 
@@ -68,6 +59,8 @@ Game::Game(Myapp app)
     glDisable(GL_CULL_FACE);
 
     debug_eyelevel = 0;
+
+    watch.Start();
 }
 
 Game::~Game()
@@ -79,11 +72,12 @@ Game::~Game()
 
 void Game::update()
 {
-    double spd = TimeSystem::DeltaTime() * 20;
+    double spd = TimeSystem::DeltaTime() * 28;
     double turnspd = 5;
 
     const auto beforepos = playerpos;
 
+#ifdef DEBUG
     if (Input::IsPressed('z'))
     {
         debug_eyelevel += spd * 2;
@@ -92,6 +86,7 @@ void Game::update()
     {
         debug_eyelevel = 0;
     }
+#endif //DEBUG
 
     if (Input::IsPressed('a'))
     {
@@ -114,6 +109,12 @@ void Game::update()
         playerpos.y += cos(ang) * spd;
     }
 
+    if (Input::IsClicked('h') && !wallhack)
+    {
+        wallhack = true;
+        hacktime.Start();
+    }
+
     lookpos = playerpos;
     lookpos.x -= sin(ang);
     lookpos.y -= cos(ang);
@@ -122,19 +123,41 @@ void Game::update()
     auto x = (playerpos.x + chipsize / 2) / chipsize;
     auto y = (playerpos.y + chipsize / 2) / chipsize;
 
+
+    double time;
     switch (mapdata[y][x])
     {
     case 0://壁
-        if (Input::IsPressed('k'))
+
+#ifdef DEBUG
+        if (Input::IsPressed('h'))
         {
             break;
         }
+#endif // DEBUG
+        
         playerpos = beforepos;
         break;
     case 2://ゴール
-        changeScene("title");
-        break;
-    default:
+        time = watch.getTime() / 1000.0;
+        getCommon()->time = time;
+        watch.Stop();
+
+        //ハイスコアの更新
+        switch (getCommon()->difficulty)
+        {
+        case Common::Difficulty::small:
+            getCommon()->sbest = std::min(getCommon()->sbest, time);
+            break;
+        case Common::Difficulty::medium:
+            getCommon()->mbest = std::min(getCommon()->mbest, time);
+            break;
+        case Common::Difficulty::large:
+            getCommon()->lbest = std::min(getCommon()->lbest, time);
+            break;
+        }
+
+        changeScene("result");
         break;
     }
 }
@@ -197,7 +220,7 @@ void Game::draw() const
             }
             else//mapdata[i][k] == 0
             {
-                if (Input::IsPressed('k'))
+                if (wallhack && hacktime.getTime() < 10 * 1000)
                 {
                     rr.color = Color(0.7, 0, 0);
                     rr.draw();
