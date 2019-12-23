@@ -7,14 +7,14 @@
 #include "Init.hpp"
 #include "Inputs.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     //一番最初のOpenGLの初期化
     glutInit(&argc, argv);
 
     //自分の初期化関数
     glInits(argv[0]);
-	MyInit();
+    MyInit();
 
     //描画を行う関数を設定
     glutDisplayFunc(display);
@@ -28,10 +28,10 @@ int main(int argc, char *argv[])
     glutSpecialFunc(mySkey);
 
     //マウスのクリックを処理する関数を設定
-    //glutMouseFunc(myMouse);
+    // glutMouseFunc(myMouse);
 
     //マウスのドラッグを処理する関数を設定
-    //glutMotionFunc(myMotion);
+    // glutMotionFunc(myMotion);
 
     //ウィンドウのサイズが変更されたときに処理する関数を設定
     glutReshapeFunc(myReshape);

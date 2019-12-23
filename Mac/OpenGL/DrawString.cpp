@@ -2,11 +2,10 @@
 
 namespace Utils
 {
-
-    //http://slis.tsukuba.ac.jp/~fujisawa.makoto.fu/lecture/iml/text/screen_character.html
+    // http://slis.tsukuba.ac.jp/~fujisawa.makoto.fu/lecture/iml/text/screen_character.html
     void DrawString(std::string str, int x0, int y0)
     {
-        //auto winsize = Window::GetWindowSize();
+        // auto winsize = Window::GetWindowSize();
 
         auto winsize = Window::GetWindowSize();
 
@@ -35,4 +34,4 @@ namespace Utils
         glMatrixMode(GL_MODELVIEW);
     }
 
-}
+}  // namespace Utils

@@ -1,13 +1,12 @@
 #include "Inputs.hpp"
-#include <unordered_map>
 #include <array>
+#include <unordered_map>
 
 #include <iostream>
 
 namespace Input
 {
     std::array<int, 256> inputraw, inputstatus;
-
 
     void Init()
     {
@@ -49,14 +48,13 @@ namespace Input
 
     bool IsPressed(unsigned char key)
     {
-        return 0 < inputstatus[key] ;
+        return 0 < inputstatus[key];
     }
 
     bool IsClicked(unsigned char key)
     {
         return inputstatus[key] == 1;
     }
-
 
     void Update()
     {
@@ -65,10 +63,9 @@ namespace Input
             inputstatus[i] = inputraw[i] == 0 ? 0 : inputstatus[i] + 1;
         }
 
-
         if (0 < inputraw[KeyKind::Esc])
         {
             exit(0);
         }
     }
-}
+}  // namespace Input

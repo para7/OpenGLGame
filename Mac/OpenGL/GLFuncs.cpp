@@ -1,14 +1,14 @@
 #include "GLFuncs.hpp"
 
-#include <stdlib.h>
-#include "GLincludes.h"
-#include <stdio.h>
-#include <stack>
-#include "SceneManager.hpp"
-#include <string>
-#include "Inputs.hpp"
-#include <iostream>
 #include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <stack>
+#include <string>
+#include "GLincludes.h"
+#include "Inputs.hpp"
+#include "SceneManager.hpp"
 #include "TimeSystem.h"
 #include "WindowInfo.h"
 
@@ -18,16 +18,16 @@ static std::stack<std::shared_ptr<Myapp>> scenemasters;
 
 void PushSceneManager(std::shared_ptr<Myapp> manager)
 {
-	scenemasters.push(manager);
+    scenemasters.push(manager);
 }
 
 void PopSceneManager()
 {
-	if (scenemasters.empty())
-	{
-		return;
-	}
-	scenemasters.pop();
+    if (scenemasters.empty())
+    {
+        return;
+    }
+    scenemasters.pop();
 }
 
 /// <summary>
@@ -36,15 +36,14 @@ void PopSceneManager()
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClear(GL_COLOR_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT);
 
-    
-    glEnable(GL_DEPTH_TEST);// Z Buffer の有効範囲の指定
+    glEnable(GL_DEPTH_TEST);  // Z Buffer の有効範囲の指定
     if (!scenemasters.empty())
     {
         scenemasters.top()->Draw();
     }
-    glDisable(GL_DEPTH_TEST); // Z Bufferの有効範囲の終わり
+    glDisable(GL_DEPTH_TEST);  // Z Bufferの有効範囲の終わり
 
     glutSwapBuffers();
 }
@@ -54,7 +53,7 @@ void display(void)
 /// </summary>
 void idle(void)
 {
-//    azimuth += 0.01;
+    //    azimuth += 0.01;
 
     Input::Update();
     TimeSystem::Update();
@@ -151,7 +150,7 @@ void mySkey(int key, int x, int y)
 /// <param name="progname">
 /// glutCreateWindowに使うパラメータ
 /// </param>
-void glInits(char *progname)
+void glInits(char* progname)
 {
     int width = 500, height = 500;
     float aspect = (float)width / (float)height;
@@ -170,9 +169,9 @@ void glInits(char *progname)
     glfwSwapInterval(1);
 
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();/*行列スタックをクリア*/
-    gluPerspective(45.0, aspect, 1.0, 450.0);
-    glMatrixMode(GL_MODELVIEW);/*幾何変換行列スタックを操作対象する*/
+    glLoadIdentity(); /*行列スタックをクリア*/
+    gluPerspective(45.0, aspect, 0.01, 450.0);
+    glMatrixMode(GL_MODELVIEW); /*幾何変換行列スタックを操作対象する*/
 
     glShadeModel(GL_SMOOTH);
 
@@ -180,4 +179,3 @@ void glInits(char *progname)
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }
-

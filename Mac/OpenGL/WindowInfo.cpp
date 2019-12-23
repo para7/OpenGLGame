@@ -14,4 +14,4 @@ namespace Window
     {
         return size;
     }
-}
+}  // namespace Window

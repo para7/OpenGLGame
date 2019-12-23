@@ -1,15 +1,15 @@
 #include "Game.hpp"
+#include <algorithm>
 #include <iostream>
+#include <queue>
+#include <vector>
 #include "GLincludes.h"
 #include "Rectangle.hpp"
 #include "TimeSystem.h"
-#include <vector>
-#include <queue>
-#include <algorithm>
 
 using namespace Utils;
 
-constexpr std::array<Point, 4u> Surround = { Point(0,1),Point(-1,0),Point(0, -1),Point(1, 0) };
+constexpr std::array<Point, 4u> Surround = {Point(0, 1), Point(-1, 0), Point(0, -1), Point(1, 0)};
 
 Game::Game(Myapp* app)
     : ang(PI)
@@ -18,7 +18,7 @@ Game::Game(Myapp* app)
     , SceneBase(app)
     , wallhack(false)
 {
-    mapsize = { static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize) };
+    mapsize = {static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize)};
 
     playerpos = Vec2(chipsize, chipsize);
 
@@ -26,10 +26,10 @@ Game::Game(Myapp* app)
 
     //上空
     {
-        constexpr GLfloat lightPosition[4] = { 100.0, 100.0, 100.0, 0 }; //光源の位置
-        constexpr GLfloat lightDiffuse[3] = { 1.0, 1.0, 1.0 }; //拡散光
-        constexpr GLfloat lightAmbient[3] = { 0.0, 0.0, 0.0 }; //環境光
-        constexpr GLfloat lightSpecular[3] = { 0.0,   0.0, 0.0 }; //鏡面光
+        constexpr GLfloat lightPosition[4] = {100.0, 100.0, 100.0, 0};  //光源の位置
+        constexpr GLfloat lightDiffuse[3] = {1.0, 1.0, 1.0};            //拡散光
+        constexpr GLfloat lightAmbient[3] = {0.0, 0.0, 0.0};            //環境光
+        constexpr GLfloat lightSpecular[3] = {0.0, 0.0, 0.0};           //鏡面光
 
         glLightfv(GL_LIGHT1, GL_POSITION, lightPosition);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse);
@@ -41,10 +41,10 @@ Game::Game(Myapp* app)
 
     //手元
     {
-        constexpr GLfloat lightPosition[4] = { 0.0, 2, -10.0, 1.0 }; //光源の位置
-        constexpr GLfloat lightDiffuse[3] = { 0.6, 0.6, 0.6 }; //拡散光
-        constexpr GLfloat lightAmbient[3] = { 0.4, 0.4, 0.4 }; //環境光
-        constexpr GLfloat lightSpecular[3] = { 0.9, 0.9, 0.9 }; //鏡面光
+        constexpr GLfloat lightPosition[4] = {0.0, 2, -10.0, 1.0};  //光源の位置
+        constexpr GLfloat lightDiffuse[3] = {0.6, 0.6, 0.6};        //拡散光
+        constexpr GLfloat lightAmbient[3] = {0.4, 0.4, 0.4};        //環境光
+        constexpr GLfloat lightSpecular[3] = {0.9, 0.9, 0.9};       //鏡面光
 
         glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
@@ -54,9 +54,6 @@ Game::Game(Myapp* app)
     }
 
     glEnable(GL_COLOR_MATERIAL);
-
-    //両面描画にする
-    glDisable(GL_CULL_FACE);
 
     debug_eyelevel = 0;
 
@@ -72,7 +69,9 @@ Game::~Game()
 
 void Game::update()
 {
-    std::cout << TimeSystem::DeltaTime()<< std::endl;
+#ifdef DEBUG
+//    std::cout << TimeSystem::DeltaTime() << std::endl;
+#endif  // DEBUG
     double spd = TimeSystem::DeltaTime() * 28;
     double turnspd = 5;
 
@@ -87,7 +86,7 @@ void Game::update()
     {
         debug_eyelevel = 0;
     }
-#endif //DEBUG
+#endif  // DEBUG
 
     if (Input::IsPressed('a'))
     {
@@ -116,77 +115,75 @@ void Game::update()
         hacktime.Start();
     }
 
+    //カメラの角度s
     lookpos = playerpos;
     lookpos.x -= sin(ang);
     lookpos.y -= cos(ang);
 
-    //ゴール判定
+    //位置判定
     auto x = (playerpos.x + chipsize / 2) / chipsize;
     auto y = (playerpos.y + chipsize / 2) / chipsize;
 
     double time;
     switch (mapdata[y][x])
     {
-    case 0://壁
-
+        case 0:  //壁
 #ifdef DEBUG
-        if (Input::IsPressed('h'))
-        {
-            break;
-        }
-#endif // DEBUG
-        
-        playerpos = beforepos;
-        break;
-    case 2://ゴール
-        time = watch.getTime() / 1000.0;
-        getCommon()->time = time;
-        watch.Stop();
+            if (Input::IsPressed('h'))
+            {
+                break;
+            }
+#endif  // DEBUG
 
-        //ハイスコアの更新
-        switch (getCommon()->difficulty)
-        {
-        case Common::Difficulty::small:
-            getCommon()->sbest = std::min(getCommon()->sbest, time);
+            //壁なら戻る
+            playerpos = beforepos;
             break;
-        case Common::Difficulty::medium:
-            getCommon()->mbest = std::min(getCommon()->mbest, time);
-            break;
-        case Common::Difficulty::large:
-            getCommon()->lbest = std::min(getCommon()->lbest, time);
-            break;
-        }
+        case 2:  //ゴール
+            time = watch.getTime() / 1000.0;
+            getCommon()->time = time;
+            watch.Stop();
 
-        changeScene("result");
-        break;
+            //ハイスコアの更新
+            switch (getCommon()->difficulty)
+            {
+                case Common::Difficulty::small:
+                    getCommon()->sbest = std::min(getCommon()->sbest, time);
+                    break;
+                case Common::Difficulty::medium:
+                    getCommon()->mbest = std::min(getCommon()->mbest, time);
+                    break;
+                case Common::Difficulty::large:
+                    getCommon()->lbest = std::min(getCommon()->lbest, time);
+                    break;
+            }
+
+            changeScene("result");
+            break;
     }
 }
 
 void Game::draw() const
 {
-    float diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    float specular[] = { 0.5, 0.5, 0.5, 1.0 };
-    float ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    float diffuse[] = {0.8, 0.8, 0.8, 1.0};
+    float specular[] = {0.5, 0.5, 0.5, 1.0};
+    float ambient[] = {0.0, 0.0, 0.0, 1.0};
 
     glPushMatrix();
 
     float eyelevel = 3.5;
 
-    gluLookAt(
-        playerpos.x, eyelevel + debug_eyelevel, playerpos.y,
-        lookpos.x, eyelevel + (debug_eyelevel*0.995), lookpos.y,
-        0, 1, 0
-    );
+    gluLookAt(playerpos.x, eyelevel + debug_eyelevel, playerpos.y, lookpos.x, eyelevel + (debug_eyelevel * 0.995),
+              lookpos.y, 0, 1, 0);
 
     //光源移動
-    static float lpos[4] = { 0,0,0,1.0 };
+    static float lpos[4] = {0, 0, 0, 1.0};
     lpos[0] = playerpos.x;
     lpos[1] = eyelevel;
     lpos[2] = playerpos.y;
     glLightfv(GL_LIGHT0, GL_POSITION, lpos);
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_TEXTURE_2D);
+    // glEnable(GL_TEXTURE_2D);
 
     //光源設定
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
@@ -195,22 +192,23 @@ void Game::draw() const
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128.0);
     glEnable(GL_LIGHTING);
 
+    //ベースになるものを作る
     Rectangle r(0, 0, 0, chipsize, chipsize, 0, 0, 0);
     r.color = Color(0, 0.7, 0, 0.5);
     r.SetShader(1, 0);
 
-
     std::uniform_int_distribution<> randgen(0, 999);
 
-    for (unsigned i = 0; i < mapdata.size(); ++i)
+    for (unsigned i = 1; i < mapdata.size() - 1; ++i)
     {
-        for (unsigned k = 0; k < mapdata[0].size(); ++k)
+        for (unsigned k = 1; k < mapdata[0].size() - 1; ++k)
         {
+            //移動したもの
             auto rr = r.Movedby(r.w * (i), 0, r.h * (k));
 
             if (0 < mapdata[k][i])
             {
-                if (mapdata[k][i] == 2)//ゴール
+                if (mapdata[k][i] == 2)  //ゴール
                 {
                     rr.color = Color(0.8, 0.8, 0);
                 }
@@ -218,8 +216,9 @@ void Game::draw() const
                 //床
                 rr.draw();
             }
-            else//mapdata[i][k] == 0
+            else  // mapdata[i][k] == 0
             {
+                //壁抜きモードなら描画しない
                 if (wallhack && hacktime.getTime() < 10 * 1000)
                 {
                     rr.color = Color(0.7, 0, 0);
@@ -234,33 +233,52 @@ void Game::draw() const
                 rr.color = Color(0.5, 0.2, 0, 0);
                 //シェーダー調整
                 rr.SetShader(1, 0.2);
+                
+                if (mapdata[k + 1][i] != 0)
+                {
+                    auto rw = rr.Movedby(0, 0, rr.h / 2);
+                    rw.Rotate(90, 0, 0);
+                    rw.draw();
+                    rw.Moveby(0, 0, -rr.h / 10);
+                    rw.draw();
+                }
 
-                auto rw = rr.Movedby(0, 0, rr.h / 2);
-                rw.Rotate(90, 0, 0);
-                rw.draw();
+                if (mapdata[k - 1][i] != 0)
+                {
+                    auto rw = rr.Movedby(0, 0, -rr.h / 2);
+                    rw.Rotate(-90, 0, 0);
+                    rw.draw();
+                    rw.Moveby(0, 0, rr.h / 10);
+                    rw.draw();
+                }
 
-                rw.Moveby(0, 0, -rr.h);
-                rw.Rotate(180, 0, 0);
-                rw.draw();
-
-                rw = rr.Movedby(rr.h / 2, 0, 0);
-                rw.Rotate(0, 0, -90);
-                rw.draw();
-
-                rw.Moveby(-rr.h, 0, 0);
-                rw.Rotate(0, 0, 180);
-                rw.draw();
+                if (mapdata[k][i + 1] != 0)
+                {
+                    auto rw = rr.Movedby(rr.h / 2, 0, 0);
+                    rw.Rotate(0, 0, -90);
+                    rw.draw();
+                    rw.Moveby(-rr.h/10, 0, 0);
+                    rw.draw();
+                }
+                if (mapdata[k][i - 1] != 0)
+                {
+                    auto rw = rr.Movedby(-rr.h / 2, 0, 0);
+                    rw.Rotate(0, 0, 90);
+                    rw.draw();
+                    
+                    rw.Moveby(rr.h / 10,0 ,0);
+                    rw.draw();
+                }
             }
         }
     }
 
-    //glDisable(GL_TEXTURE_2D);
+    // glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
 }
-
 
 void Game::Clustering()
 {
@@ -274,7 +292,7 @@ void Game::Clustering()
     std::uniform_int_distribution<> randgen(0, 999);
 
     int number = 2;
-    Utils::Point rb;//right bottom
+    Utils::Point rb;  // right bottom
     std::vector<Point> breakwall;
 
     //壁の数値
@@ -290,14 +308,14 @@ void Game::Clustering()
                 if ((i % 2) && (k % 2))
                 {
                     mapdata[i][k] = number++;
-                    rb = { i, k };
+                    rb = {i, k};
                 }
                 else if ((i % 2) ^ (k % 2) && (i < mapsize.x - 2) && (k < mapsize.y - 2))
                 {
                     if (i % 2)
                     {
                         mapdata[i][k] = -1;
-                        rb = { i, k };
+                        rb = {i, k};
                     }
                     else
                     {
@@ -320,7 +338,7 @@ void Game::Clustering()
             info1 = mapdata[pos.y + 0][pos.x + 1];
             info2 = mapdata[pos.y + 0][pos.x - 1];
         }
-        else if (mapdata[pos.y][pos.x] == -2)//よこ
+        else if (mapdata[pos.y][pos.x] == -2)  //よこ
         {
             info1 = mapdata[pos.y + 1][pos.x];
             info2 = mapdata[pos.y - 1][pos.x];
@@ -342,9 +360,7 @@ void Game::Clustering()
 
                     auto& hoge = mapdata[pos.y][pos.x];
 
-                    if (hoge != info1 &&
-                        hoge != Wall &&
-                        0 < hoge)
+                    if (hoge != info1 && hoge != Wall && 0 < hoge)
                     {
                         hoge = info1;
                         qu.push(pos);
