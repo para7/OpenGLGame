@@ -233,7 +233,7 @@ void Game::draw() const
                 rr.color = Color(0.5, 0.2, 0, 0);
                 //シェーダー調整
                 rr.SetShader(1, 0.2);
-                
+
                 if (mapdata[k + 1][i] != 0)
                 {
                     auto rw = rr.Movedby(0, 0, rr.h / 2);
@@ -257,7 +257,7 @@ void Game::draw() const
                     auto rw = rr.Movedby(rr.h / 2, 0, 0);
                     rw.Rotate(0, 0, -90);
                     rw.draw();
-                    rw.Moveby(-rr.h/10, 0, 0);
+                    rw.Moveby(-rr.h / 10, 0, 0);
                     rw.draw();
                 }
                 if (mapdata[k][i - 1] != 0)
@@ -265,8 +265,8 @@ void Game::draw() const
                     auto rw = rr.Movedby(-rr.h / 2, 0, 0);
                     rw.Rotate(0, 0, 90);
                     rw.draw();
-                    
-                    rw.Moveby(rr.h / 10,0 ,0);
+
+                    rw.Moveby(rr.h / 10, 0, 0);
                     rw.draw();
                 }
             }

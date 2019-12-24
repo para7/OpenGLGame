@@ -1,21 +1,18 @@
 #pragma once
 
-#include "GLincludes.h"
 #include <array>
-#include "Vec23.hpp"
 #include "DrawString.hpp"
+#include "GLincludes.h"
+#include "Vec23.hpp"
 
 namespace Utils
 {
-
     class GLEnableScope
     {
     private:
-
         const GLenum _mode;
 
     public:
-
         explicit GLEnableScope(GLenum mode)
             : _mode(mode)
         {
@@ -28,11 +25,9 @@ namespace Utils
         }
     };
 
-
     struct Color
     {
-        union
-        {
+        union {
             GLfloat color_array[4];
 
             struct
@@ -65,7 +60,6 @@ namespace Utils
             a = 0;
         }
 
-
         void operator=(const Color& _c)
         {
             this->r = _c.r;
@@ -75,17 +69,15 @@ namespace Utils
         }
     };
 
-
-    //https://cpplover.blogspot.com/2014/10/c14-constexpr.html
+    // https://cpplover.blogspot.com/2014/10/c14-constexpr.html
     // C++11のconstexpr関数によるsqrtの実装
-    template < typename T >
+    template <typename T>
     constexpr T sqrt_aux(T s, T x, T prev)
     {
-        return x != prev ?
-            sqrt_aux(s, (x + s / x) / 2.0, x) : x;
+        return x != prev ? sqrt_aux(s, (x + s / x) / 2.0, x) : x;
     }
 
-    template < typename T >
+    template <typename T>
     constexpr T sqrt(T s)
     {
         T x = s / 2.0;
@@ -102,9 +94,9 @@ namespace Utils
     template <typename T>
     constexpr T pow2(T a)
     {
-        return a * a; 
+        return a * a;
     }
 
-}
+}  // namespace Utils
 
 constexpr double PI = 3.141592653589793238;

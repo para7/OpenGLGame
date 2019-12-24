@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SceneManager.hpp"
 #include <memory>
 #include "Common.hpp"
+#include "SceneManager.hpp"
 
 void PushSceneManager(std::shared_ptr<Myapp> manager);
 
@@ -72,7 +72,7 @@ void mySkey(int key, int x, int y);
 /// <param name="y">
 /// マウスカーソル座標y
 /// </param>
-//void myKbd(unsigned char key, int x, int y);
+// void myKbd(unsigned char key, int x, int y);
 
 /// <summary>
 /// 初期化
@@ -80,4 +80,4 @@ void mySkey(int key, int x, int y);
 /// <param name="progname">
 /// glutCreateWindowに使うパラメータ
 /// </param>
-void glInits(char *progname);
+void glInits(char* progname);

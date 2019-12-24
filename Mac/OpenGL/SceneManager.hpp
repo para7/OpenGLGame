@@ -1,8 +1,8 @@
 #pragma once
-#include <memory>
 #include <functional>
-#include <unordered_map>
+#include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace Mysystem
 {
@@ -10,21 +10,17 @@ namespace Mysystem
     class SceneMaster
     {
     public:
-
         using KeyType = Key;
 
     public:
-
         // <SceneBase>
 
         class SceneBase
         {
         private:
-
             SceneMaster<Key, Common>* master;
 
         protected:
-
             virtual void changeScene(const Key& next) final
             {
                 master->changeScene(next);
@@ -41,10 +37,10 @@ namespace Mysystem
             }
 
         public:
-
             SceneBase(SceneMaster<Key, Common>* _master)
                 : master(_master)
-            {}
+            {
+            }
 
             virtual void update() {}
             virtual void draw() const {}
@@ -54,8 +50,6 @@ namespace Mysystem
         // </SceneBase>
 
     private:
-
-
         std::shared_ptr<SceneBase> currentscene;
 
         std::unordered_map<Key, std::function<std::shared_ptr<SceneBase>()>> scenelist;
@@ -65,8 +59,7 @@ namespace Mysystem
         Key nextscenename;
 
     public:
-
-        std::shared_ptr< Common > commondata;
+        std::shared_ptr<Common> commondata;
 
         inline std::shared_ptr<Common> GetCommonData()
         {
@@ -74,7 +67,6 @@ namespace Mysystem
         }
 
     public:
-
         template <class SceneType>
         /// <summary>
         /// シーンの追加
@@ -151,4 +143,4 @@ namespace Mysystem
         {
         }
     };
-}
+}  // namespace Mysystem

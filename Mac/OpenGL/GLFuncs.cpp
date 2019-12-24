@@ -166,7 +166,7 @@ void glInits(char* progname)
     glClearColor(0.0, 0.0, 0.22, 1.0);
 
     //垂直同期の設定(できてなさそう)
-    glfwSwapInterval(1);
+    // glfwSwapInterval(1);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity(); /*行列スタックをクリア*/

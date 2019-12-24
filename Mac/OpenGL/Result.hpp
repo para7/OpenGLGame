@@ -1,22 +1,22 @@
 #pragma once
 
-#include "Common.hpp"
-#include "Inputs.hpp"
 #include <string>
+#include "Common.hpp"
 #include "DrawString.hpp"
+#include "Inputs.hpp"
 
 class Result : public Myapp::SceneBase
 {
 private:
-
     std::string timestr;
 
 public:
-    Result(Myapp* app):SceneBase(app)
-    {        
+    Result(Myapp* app)
+        : SceneBase(app)
+    {
         timestr = std::to_string(getCommon()->time);
 
-        glColor3f(1.0,1.0,1.0);
+        glColor3f(1.0, 1.0, 1.0);
     }
 
     void update() override
@@ -27,7 +27,7 @@ public:
         }
     }
 
-    void draw()const override
+    void draw() const override
     {
         Utils::DrawString("Clear time", 20, 20);
         Utils::DrawString(timestr.c_str(), 25, 40);

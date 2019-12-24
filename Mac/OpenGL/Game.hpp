@@ -1,19 +1,18 @@
 #pragma once
 
-#include "SceneManager.hpp"
+#include <iostream>
+#include <random>
 #include <string>
+#include <vector>
 #include "Common.hpp"
 #include "Inputs.hpp"
-#include <iostream>
-#include <vector>
-#include "Utilities.hpp"
-#include <random>
+#include "SceneManager.hpp"
 #include "StopWatch.hpp"
+#include "Utilities.hpp"
 
 class Game : public Myapp::SceneBase
 {
 private:
-
     Utils::Point mapsize;
     std::random_device rd;
     std::mt19937 mt;
@@ -35,7 +34,6 @@ private:
     StopWatch hacktime;
 
 public:
-
     Game(Myapp* app);
 
     void update() override;
@@ -45,7 +43,7 @@ public:
     ~Game();
 };
 
-//class TestScene : public Myapp::SceneBase
+// class TestScene : public Myapp::SceneBase
 //{
 //    void update() override
 //    {

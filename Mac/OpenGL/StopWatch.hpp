@@ -5,17 +5,14 @@
 class StopWatch
 {
 public:
-
     using M = std::chrono::milliseconds;
 
 private:
-
     std::chrono::time_point<std::chrono::system_clock> begin;
 
     bool _active;
 
 public:
-
     StopWatch()
     {
         _active = false;
@@ -49,7 +46,7 @@ public:
 
     //    template <class TimeType>
 
-    template<typename ClockType>
+    template <typename ClockType>
     long long getTime() const
     {
         if (!_active)

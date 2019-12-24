@@ -17,8 +17,10 @@ struct Common
 
     enum Difficulty
     {
-        small, medium, large
+        small,
+        medium,
+        large
     } difficulty;
 };
 
-using Myapp = Mysystem::SceneMaster <std::string, Common>;
+using Myapp = Mysystem::SceneMaster<std::string, Common>;

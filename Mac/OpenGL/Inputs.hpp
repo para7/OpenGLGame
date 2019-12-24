@@ -2,12 +2,14 @@
 
 namespace Input
 {
-    //esc27 del127 enter13 space32
+    // esc27 del127 enter13 space32
     enum KeyKind
     {
-        Enter = 13, Esc = 27, Space = 32, Del = 127
+        Enter = 13,
+        Esc = 27,
+        Space = 32,
+        Del = 127
     };
-
 
     void Init();
 
@@ -22,4 +24,4 @@ namespace Input
     bool IsClicked(unsigned char key);
 
     void Update();
-}
+}  // namespace Input
