@@ -32,8 +32,9 @@ private:
 
     bool wallhack;
     StopWatch hacktime;
-    
-    enum MapInfo{
+
+    enum MapInfo
+    {
         Wall = 0,
         Floor = 1,
         Goal = 2,

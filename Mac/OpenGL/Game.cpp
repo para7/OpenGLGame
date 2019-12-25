@@ -69,8 +69,8 @@ Game::~Game()
 
 void Game::update()
 {
-//    ReadBitmapFile("wall.bmp", <#int *pbm#>, <#unsigned char **pptr#>)
-    
+    //    ReadBitmapFile("wall.bmp", <#int *pbm#>, <#unsigned char **pptr#>)
+
 #ifdef DEBUG
 //    std::cout << TimeSystem::DeltaTime() << std::endl;
 #endif  // DEBUG
@@ -140,11 +140,11 @@ void Game::update()
             //壁なら戻る
             playerpos = beforepos;
             break;
-            
+
         case MapInfo::Floor:
             mapdata[y][x] = MapInfo::Walked;
             break;
-            
+
         case MapInfo::Goal:  //ゴール
             time = watch.getTime() / 1000.0;
             getCommon()->time = time;
@@ -213,81 +213,79 @@ void Game::draw() const
             //移動したもの
             auto rr = r.Movedby(r.w * (i), 0, r.h * (k));
 
-            switch (mapdata[k][i]) {
-
-            }
-            
-            if (0 < mapdata[k][i])
+            switch (mapdata[k][i])
             {
-                if (mapdata[k][i] == 2)  //ゴール
-                {
-                    rr.color = Color(0.8, 0.8, 0);
-                }
-
-                //床
-                rr.draw();
-            }
-            else  // mapdata[i][k] == 0
-            {
-#ifdef DEBUG
-                rr.color = Color(0.8, 0.2, 0.2);
-                rr.draw();
-#endif //DEBUG
-                
-                //壁抜きモードなら描画しない
-                if (wallhack && hacktime.getTime() < 10 * 1000)
-                {
-                    rr.color = Color(0.7, 0, 0);
+                case MapInfo::Floor:
                     rr.draw();
-                    continue;
-                }
-                //壁
+                    break;
+                case MapInfo::Goal:
+                    rr.color = Color(0.8, 0.8, 0);
+                    rr.draw();
+                    break;
+                case MapInfo::Walked:
+                    rr.color = Color(0.0, 0.4, 0.7);
+                    rr.draw();
+                    break;
+                case MapInfo::Wall:
+#ifdef DEBUG
+                    rr.color = Color(0.8, 0.2, 0.2);
+                    rr.draw();
+#endif  // DEBUG
 
-                //高さ合わせ
-                rr.Moveby(0, r.h / 2, 0);
-                //色
-                rr.color = Color(0.5, 0.2, 0, 0);
-                //シェーダー調整
-                rr.SetShader(1, 0.2);
+                    //壁抜きモードなら描画しない
+                    if (wallhack && hacktime.getTime() < 10 * 1000)
+                    {
+                        rr.color = Color(0.7, 0, 0);
+                        rr.draw();
+                        continue;
+                    }
+                    //壁
 
-                if (mapdata[k + 1][i] != 0)
-                {
-                    auto rw = rr.Movedby(0, 0, rr.h / 2);
-                    rw.Rotate(90, 0, 0);
-                    rw.draw();
-                    rw.Moveby(0, 0, -rr.h / 10);
-                    rw.draw();
-                }
-                
-                if (mapdata[k - 1][i] != 0)
-                {
-                    auto rw = rr.Movedby(0, 0, -rr.h / 2);
-                    rw.Rotate(-90, 0, 0);
-                    rw.draw();
-                    rw.Moveby(0, 0, rr.h / 10);
-                    rw.draw();
-                }
+                    //高さ合わせ
+                    rr.Moveby(0, r.h / 2, 0);
+                    //色
+                    rr.color = Color(0.5, 0.2, 0, 0);
+                    //シェーダー調整
+                    rr.SetShader(1, 0.2);
 
-                if (mapdata[k][i + 1] != 0)
-                {
-                    auto rw = rr.Movedby(rr.h / 2, 0, 0);
-                    rw.Rotate(0, 0, -90);
-                    rw.draw();
-                    rw.Moveby(-rr.h / 10, 0, 0);
-                    rw.draw();
-                }
-                
-                if (mapdata[k][i - 1] != 0)
-                {
-                    auto rw = rr.Movedby(-rr.h / 2, 0, 0);
-                    rw.Rotate(0, 0, 90);
-                    rw.draw();
+                    if (mapdata[k + 1][i] != 0)
+                    {
+                        auto rw = rr.Movedby(0, 0, rr.h / 2);
+                        rw.Rotate(90, 0, 0);
+                        rw.draw();
+                        rw.Moveby(0, 0, -rr.h / 10);
+                        rw.draw();
+                    }
 
-                    rw.Moveby(rr.h / 10, 0, 0);
-                    rw.draw();
-                }
-                
-                
+                    if (mapdata[k - 1][i] != 0)
+                    {
+                        auto rw = rr.Movedby(0, 0, -rr.h / 2);
+                        rw.Rotate(-90, 0, 0);
+                        rw.draw();
+                        rw.Moveby(0, 0, rr.h / 10);
+                        rw.draw();
+                    }
+
+                    if (mapdata[k][i + 1] != 0)
+                    {
+                        auto rw = rr.Movedby(rr.h / 2, 0, 0);
+                        rw.Rotate(0, 0, -90);
+                        rw.draw();
+                        rw.Moveby(-rr.h / 10, 0, 0);
+                        rw.draw();
+                    }
+
+                    if (mapdata[k][i - 1] != 0)
+                    {
+                        auto rw = rr.Movedby(-rr.h / 2, 0, 0);
+                        rw.Rotate(0, 0, 90);
+                        rw.draw();
+
+                        rw.Moveby(rr.h / 10, 0, 0);
+                        rw.draw();
+                    }
+
+                    break;
             }
         }
     }
@@ -315,9 +313,9 @@ void Game::Clustering()
     std::vector<Point> breakwall;
 
     const int magicnumber = 3;
-    for (int i = 0+magicnumber; i < mapsize.x+magicnumber; ++i)
+    for (int i = 0 + magicnumber; i < mapsize.x + magicnumber; ++i)
     {
-        for (int k = 0+magicnumber; k < mapsize.y+magicnumber; ++k)
+        for (int k = 0 + magicnumber; k < mapsize.y + magicnumber; ++k)
         {
             mapdata[i][k] = MapInfo::Wall;
             if ((1 <= i && i < mapsize.x - 1) && (1 <= k && k < mapsize.y - 1))
@@ -392,12 +390,12 @@ void Game::Clustering()
         }
     }
 
-    //0と1に2値化
+    // 0と1に2値化
     for (int i = 0; i < mapsize.x; ++i)
     {
         for (int k = 0; k < mapsize.y; ++k)
         {
-            mapdata[i][k] = mapdata[i][k] == MapInfo::Wall ? MapInfo::Wall : 1;
+            mapdata[i][k] = mapdata[i][k] == MapInfo::Wall ? MapInfo::Wall : MapInfo::Floor;
         }
     }
     //ゴール設置
