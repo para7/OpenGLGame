@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "GLincludes.h"
 
-class testBMP
+struct testBMP
 {
  unsigned long sizeX;  //横
  unsigned long sizeY; //縦
@@ -12,6 +12,5 @@ class testBMP
  bool Load(char *filename);
  GLuint texture;
  void TexSet();
-public:
  testBMP(char *FileName);
 };

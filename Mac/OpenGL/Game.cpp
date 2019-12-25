@@ -17,7 +17,7 @@ Game::Game(Myapp* app)
     , mt(rd())
     , SceneBase(app)
     , wallhack(false)
-    , wallbmp("wallbmp")
+//    , wallbmp("wall.bmp")
 {
     mapsize = {static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize)};
 
@@ -70,8 +70,7 @@ Game::~Game()
 
 void Game::update()
 {
-    //    ReadBitmapFile("wall.bmp", <#int *pbm#>, <#unsigned char **pptr#>)
-
+    
 #ifdef DEBUG
 //    std::cout << TimeSystem::DeltaTime() << std::endl;
 #endif  // DEBUG

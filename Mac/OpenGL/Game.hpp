@@ -42,7 +42,7 @@ private:
         Walked = 10
     };
     
-    testBMP wallbmp;
+//    testBMP wallbmp;
 
 public:
     Game(Myapp* app);

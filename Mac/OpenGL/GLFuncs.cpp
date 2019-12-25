@@ -62,7 +62,6 @@ void idle(void)
     {
         scenemasters.top()->Update();
     }
-
     glutPostRedisplay();
 }
 
