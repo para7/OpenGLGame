@@ -20,7 +20,7 @@ Game::Game(Myapp* app)
 {
     mapsize = {static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize)};
 
-    playerpos = Vec2(chipsize, chipsize);
+    playerpos = Vec2(chipsize * 3, chipsize * 3);
 
     Clustering();
 
@@ -69,6 +69,8 @@ Game::~Game()
 
 void Game::update()
 {
+//    ReadBitmapFile("wall.bmp", <#int *pbm#>, <#unsigned char **pptr#>)
+    
 #ifdef DEBUG
 //    std::cout << TimeSystem::DeltaTime() << std::endl;
 #endif  // DEBUG
@@ -127,7 +129,7 @@ void Game::update()
     double time;
     switch (mapdata[y][x])
     {
-        case 0:  //壁
+        case MapInfo::Wall:  //壁
 #ifdef DEBUG
             if (Input::IsPressed('h'))
             {
@@ -138,7 +140,12 @@ void Game::update()
             //壁なら戻る
             playerpos = beforepos;
             break;
-        case 2:  //ゴール
+            
+        case MapInfo::Floor:
+            mapdata[y][x] = MapInfo::Walked;
+            break;
+            
+        case MapInfo::Goal:  //ゴール
             time = watch.getTime() / 1000.0;
             getCommon()->time = time;
             watch.Stop();
@@ -206,6 +213,10 @@ void Game::draw() const
             //移動したもの
             auto rr = r.Movedby(r.w * (i), 0, r.h * (k));
 
+            switch (mapdata[k][i]) {
+
+            }
+            
             if (0 < mapdata[k][i])
             {
                 if (mapdata[k][i] == 2)  //ゴール
@@ -218,6 +229,11 @@ void Game::draw() const
             }
             else  // mapdata[i][k] == 0
             {
+#ifdef DEBUG
+                rr.color = Color(0.8, 0.2, 0.2);
+                rr.draw();
+#endif //DEBUG
+                
                 //壁抜きモードなら描画しない
                 if (wallhack && hacktime.getTime() < 10 * 1000)
                 {
@@ -242,7 +258,7 @@ void Game::draw() const
                     rw.Moveby(0, 0, -rr.h / 10);
                     rw.draw();
                 }
-
+                
                 if (mapdata[k - 1][i] != 0)
                 {
                     auto rw = rr.Movedby(0, 0, -rr.h / 2);
@@ -260,6 +276,7 @@ void Game::draw() const
                     rw.Moveby(-rr.h / 10, 0, 0);
                     rw.draw();
                 }
+                
                 if (mapdata[k][i - 1] != 0)
                 {
                     auto rw = rr.Movedby(-rr.h / 2, 0, 0);
@@ -269,6 +286,8 @@ void Game::draw() const
                     rw.Moveby(rr.h / 10, 0, 0);
                     rw.draw();
                 }
+                
+                
             }
         }
     }
@@ -283,10 +302,10 @@ void Game::draw() const
 void Game::Clustering()
 {
     //配列確保
-    mapdata.resize(mapsize.y);
+    mapdata.resize(mapsize.y + 4);
     for (auto& v : mapdata)
     {
-        v.resize(mapsize.x);
+        v.resize(mapsize.x + 4);
     }
 
     std::uniform_int_distribution<> randgen(0, 999);
@@ -295,14 +314,12 @@ void Game::Clustering()
     Utils::Point rb;  // right bottom
     std::vector<Point> breakwall;
 
-    //壁の数値
-    int Wall = 0;
-
-    for (int i = 0; i < mapsize.x; ++i)
+    const int magicnumber = 3;
+    for (int i = 0+magicnumber; i < mapsize.x+magicnumber; ++i)
     {
-        for (int k = 0; k < mapsize.y; ++k)
+        for (int k = 0+magicnumber; k < mapsize.y+magicnumber; ++k)
         {
-            mapdata[i][k] = Wall;
+            mapdata[i][k] = MapInfo::Wall;
             if ((1 <= i && i < mapsize.x - 1) && (1 <= k && k < mapsize.y - 1))
             {
                 if ((i % 2) && (k % 2))
@@ -360,7 +377,7 @@ void Game::Clustering()
 
                     auto& hoge = mapdata[pos.y][pos.x];
 
-                    if (hoge != info1 && hoge != Wall && 0 < hoge)
+                    if (hoge != info1 && hoge != MapInfo::Wall && 0 < hoge)
                     {
                         hoge = info1;
                         qu.push(pos);
@@ -371,17 +388,18 @@ void Game::Clustering()
         }
         else
         {
-            mapdata[pos.y][pos.x] = Wall;
+            mapdata[pos.y][pos.x] = MapInfo::Wall;
         }
     }
 
+    //0と1に2値化
     for (int i = 0; i < mapsize.x; ++i)
     {
         for (int k = 0; k < mapsize.y; ++k)
         {
-            mapdata[i][k] = mapdata[i][k] == 0 ? 0 : 1;
+            mapdata[i][k] = mapdata[i][k] == MapInfo::Wall ? MapInfo::Wall : 1;
         }
     }
     //ゴール設置
-    mapdata[rb.x][rb.y] = 2;
+    mapdata[rb.x][rb.y] = MapInfo::Goal;
 }

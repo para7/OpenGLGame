@@ -32,6 +32,13 @@ private:
 
     bool wallhack;
     StopWatch hacktime;
+    
+    enum MapInfo{
+        Wall = 0,
+        Floor = 1,
+        Goal = 2,
+        Walked = 10
+    };
 
 public:
     Game(Myapp* app);
