@@ -17,6 +17,7 @@ Game::Game(Myapp* app)
     , mt(rd())
     , SceneBase(app)
     , wallhack(false)
+    , wallbmp("wallbmp")
 {
     mapsize = {static_cast<int>(getCommon()->mapsize), static_cast<int>(getCommon()->mapsize)};
 

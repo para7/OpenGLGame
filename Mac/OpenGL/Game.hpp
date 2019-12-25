@@ -9,6 +9,7 @@
 #include "SceneManager.hpp"
 #include "StopWatch.hpp"
 #include "Utilities.hpp"
+#include "bmptest.h"
 
 class Game : public Myapp::SceneBase
 {
@@ -40,6 +41,8 @@ private:
         Goal = 2,
         Walked = 10
     };
+    
+    testBMP wallbmp;
 
 public:
     Game(Myapp* app);

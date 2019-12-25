@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A08CACE23B3AB430004B38E /* bmptest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A08CACD23B3AB430004B38E /* bmptest.cpp */; };
 		8A59C1EC23850D3E009CE4E7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A59C1EA23850D3E009CE4E7 /* OpenGL.framework */; };
 		8A59C1ED23850D3E009CE4E7 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A59C1EB23850D3E009CE4E7 /* GLUT.framework */; };
 		8A59C212238513DC009CE4E7 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A59C211238513DC009CE4E7 /* libglfw.3.3.dylib */; };
@@ -36,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8A08CACC23B3A19A0004B38E /* bmptest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bmptest.h; sourceTree = "<group>"; };
+		8A08CACD23B3AB430004B38E /* bmptest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bmptest.cpp; sourceTree = "<group>"; };
 		8A59C1DF23850D0A009CE4E7 /* OpenGL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A59C1EA23850D3E009CE4E7 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		8A59C1EB23850D3E009CE4E7 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -55,7 +58,6 @@
 		8A59C21F23852FE0009CE4E7 /* GLincludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLincludes.h; sourceTree = "<group>"; };
 		8A59C22023852FE0009CE4E7 /* Inputs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Inputs.cpp; sourceTree = "<group>"; };
 		8A59C22123852FE0009CE4E7 /* Vec23.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vec23.hpp; sourceTree = "<group>"; };
-		8A59C22223852FE0009CE4E7 /* read_bitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = read_bitmap.h; sourceTree = "<group>"; };
 		8A59C22323852FE0009CE4E7 /* Utilities.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utilities.hpp; sourceTree = "<group>"; };
 		8A59C22423852FE0009CE4E7 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		8A59C22523852FE0009CE4E7 /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
@@ -121,7 +123,6 @@
 				8A59C22E23852FE1009CE4E7 /* main.cpp */,
 				8A59C21623852FE0009CE4E7 /* Player.cpp */,
 				8A59C23023852FE1009CE4E7 /* Player.hpp */,
-				8A59C22223852FE0009CE4E7 /* read_bitmap.h */,
 				8A59C21D23852FE0009CE4E7 /* Rectangle.hpp */,
 				8A59C22823852FE0009CE4E7 /* Result.hpp */,
 				8A59C21E23852FE0009CE4E7 /* SceneManager.hpp */,
@@ -136,6 +137,8 @@
 				8A59C22123852FE0009CE4E7 /* Vec23.hpp */,
 				8A59C22723852FE0009CE4E7 /* WindowInfo.cpp */,
 				8A59C21423852FE0009CE4E7 /* WindowInfo.h */,
+				8A08CACC23B3A19A0004B38E /* bmptest.h */,
+				8A08CACD23B3AB430004B38E /* bmptest.cpp */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				8A59C23823852FE1009CE4E7 /* WindowInfo.cpp in Sources */,
 				8A59C23123852FE1009CE4E7 /* Init.cpp in Sources */,
 				8A59C23523852FE1009CE4E7 /* Inputs.cpp in Sources */,
+				8A08CACE23B3AB430004B38E /* bmptest.cpp in Sources */,
 				8A59C23923852FE1009CE4E7 /* Title.cpp in Sources */,
 				8A59C23423852FE1009CE4E7 /* Game.cpp in Sources */,
 				8A59C23A23852FE1009CE4E7 /* main.cpp in Sources */,
