@@ -341,8 +341,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3/include;
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3/lib;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3.2/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3.2/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -352,8 +352,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3/include;
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3/lib;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3.2/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/glfw/3.3.2/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
